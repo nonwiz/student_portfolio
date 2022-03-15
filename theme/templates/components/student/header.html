@@ -1,0 +1,15 @@
+<div class="bg-primary text-gray-50">
+    <div class="flex flex-row justify-between px-2 py-2 gap-2">
+        <!-- For desktop -->
+        <div>
+            <a href="{% url 'spapp:dashboard' %}"> Welcome {{ user.first_name }}! </a>
+        </div>
+        <div class="flex flex-row justify-between gap-3">
+            <a href="{% url 'spapp:dashboard' %}"> Home </a>
+            <a href="{% url 'spapp:profile' %}"> Profile </a>
+            <a href="{% url 'spapp:settings' %}"> Settings </a>
+            <a href="{% url 'spapp:logout' %}" class="px-1 bg-red "> Sign out </a>
+        </div>
+    </div>
+
+</div>

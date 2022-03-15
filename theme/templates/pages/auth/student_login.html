@@ -1,0 +1,41 @@
+{% extends 'pages/auth/layout.html' %}
+{% block content %}
+
+<form class="flex w-4/5 mx-auto mt-20 overflow-hidden bg-white rounded-lg shadow-lg sm:mt-60 md:w-3/5" method="POST">
+{% csrf_token %}
+  <div class="hidden bg-cover lg:block lg:w-1/2" style="background-image:url('https://picsum.photos/1575/800')"></div>
+  
+  <div class="w-full px-6 py-8 md:px-8 lg:w-1/2">
+      <h2 class="text-2xl font-semibold text-center text-gray-700 ">Student Profile</h2>
+
+
+      <div class="mt-4">
+          <label class="block mb-2 text-sm font-medium text-gray-600 " for="usernamw">Username</label>
+          <input id="username" class="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-blue-500 focus:outline-none focus:ring" type="text" placeholder="john76" name="username">
+      </div>
+
+      <div class="mt-4">
+        <label class="block mb-2 text-sm font-medium text-gray-600 " for="password">Password</label>
+        <input id="password" class="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-blue-500 focus:outline-none focus:ring" type="password" placeholder="********" name="password">
+      </div>
+      
+      <div class="flex justify-end">   
+        <a href="#" class="text-xs text-gray-500 hover:underline">Forget Password?</a>  
+    </div> 
+      
+      <div class="mt-8">
+          <button class="w-full px-4 py-2 tracking-wide text-white bg-gray-700 rounded transition-colors duration-200 transform hover:bg-gray-600 focus:outline-none focus:bg-gray-600">
+              Login
+          </button>
+      </div>
+      
+      <div class="flex items-center justify-between mt-4">
+          <span class="w-1/5 border-b md:w-1/4"></span>
+
+          <a href="{% url 'spapp:register' %}" class="text-xs text-gray-500 uppercase hover:underline">or sign up</a>
+          
+          <span class="w-1/5 border-b md:w-1/4"></span>
+      </div>
+  </div>
+</form>
+{% endblock %}

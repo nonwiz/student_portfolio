@@ -1,0 +1,22 @@
+{% extends "pages/student/layout.html" %}
+
+
+{% block content %}
+
+<h1> Settings </h1>
+<h2> Student </h2>
+{{ student }}
+
+
+<hr />
+{% include "components/student/update_account_detail.html" with form=update_student  %}
+   
+
+<hr />
+<h2> Request to remove account </h2>
+<p> Account status {{ account_status }}, </p>
+<p>  True means not requested to remove. </p>
+<a class="underline" href="{% url 'spapp:req_remove_account' %}"><span class="text-rose-500"> Asked to remove account from the system </span> </a>
+
+
+{% endblock %}
