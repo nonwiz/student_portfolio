@@ -1,25 +1,58 @@
-from .models import Student
+from .models import Student, Degree, Major, Emphasis, Validator, AcademicRecognition
 from django import forms
+
 
 class StudentForm(forms.ModelForm):
     # user = forms.CharField(widget=forms.TextInput(
     #     attrs={
-    #         'type': 'hidden', 
+    #         'type': 'hidden',
     #         }
     #     ))
     # date_of_birth = forms.CharField(widget=forms.TextInput(
     #     attrs={
-    #         'type': 'date', 
+    #         'type': 'date',
     #         }
     #     ))
-   
+
     nationality = forms.CharField(widget=forms.TextInput(
         attrs={
-            'type': 'text', 
+            'type': 'text',
             'placeholder': 'Khmer',
             'class': ""
-            }
-        ))
+        }
+    ))
+
     class Meta:
         model = Student
-        fields = [ 'interests',  'nationality']
+        fields = ['interests',  'nationality']
+
+
+# academic recognition
+class ARForm(forms.ModelForm):
+    class Meta:
+        model = AcademicRecognition
+        fields = '__all__'
+
+
+class DegreeForm(forms.ModelForm):
+    class Meta:
+        model = Degree
+        fields = '__all__'
+
+
+class MajorForm(forms.ModelForm):
+    class Meta:
+        model = Major
+        fields = '__all__'
+
+
+class EmphasisForm(forms.ModelForm):
+    class Meta:
+        model = Emphasis
+        fields = '__all__'
+
+
+class ValidatorForm(forms.ModelForm):
+    class Meta:
+        model = Validator
+        fields = '__all__'

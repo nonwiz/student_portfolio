@@ -1,7 +1,16 @@
-<h2> Update account Detail </h2> 
-<form method="post">
+<h2>Form: {{ title }} </h2> 
+<br />
+action = {{ url }}
+<form method="post" id="create_form" action="{{ url }}" >
     {% csrf_token %}
     {{ form.as_ul }}
 <button type="submit" class="p-4 text-white rounded-lg bg-primary"  value="Submit">Update</button>
 </form>
+
+<script>
+
+
+
+</script>
+
 

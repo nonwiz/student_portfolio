@@ -1,9 +1,62 @@
-{% extends "pages/student/layout.html" %}
-
-
+{% extends "components/student/layout.html" %}
 {% block content %}
-
-<h1> Test </h1>
-<h2 class="underline"> Test </h2>
+<div class="grid grid-cols-3 m-5 ml-36">
+    <div>
+        <b><h3>Create Academic-Recognition</h3></b>
+        <form method="post" class="border-solid rounded-lg pt-3" action="#">
+            {% csrf_token %}  
+            {{ar_form.as_p}}
+            <input type="submit" value="submit" class="bg-primary text-white rounded-lg p-2 border-solid" />
+        </form>
+    </div>
+    <div>
+        <b><h3>Create Validator</h3></b>
+        <form method="post" class="border-solid rounded-lg pt-3" action="#">
+            {% csrf_token %}
+            <input type="text" placeholder="name" name="name" /><br><br>
+            <input type="text" placeholder="telephone" name="phone" /><br><br>
+            <input type="email" placeholder="email@email.com" name="email" />
+            <input type="submit" value="submit" class="bg-primary text-white rounded-lg p-2 border-solid" />
+        </form>
+    </div>
+    <div>
+        <b><h3>Create Academic-Recognition</h3></b>
+        <form method="post" class="border-solid rounded-lg pt-3" action="{% url 'spapp:manage-ar' %}">
+            {% csrf_token %}  
+            {{ar_form.as_p}}
+            <input type="submit" value="submit" class="bg-primary text-white rounded-lg p-2 border-solid" />
+        </form>
+    </div>
+</div>
+<div class="grid grid-cols-3 m-5 ml-36">
+    <div>
+        <b><h3>My Activities</h3></b><br>
+        {% for activity in activities %}
+            <div class="mt-0">
+                Name: <strong>{{activity.activity_name}}</strong><br>
+                Description: <strong>{{activity.description}}</strong><br>
+                Validator: <strong>{{activity.validator}}</strong><br>
+                Verification-Status: <strong>{{activity.verification_status}}</strong><br>
+                Rewarded-Points: <strong>{{activity.rewarded_points}}</strong><br>
+                Start-Date: <strong>{{activity.start_date}}</strong><br>
+                End-Date: <strong>{{activity.end_date}}</strong>
+            </div>    
+        {% endfor %}
+    </div>
+    <div>
+        <b><h3>My Academic Recognition</h3></b><br>
+        {% for activity in activities %}
+            <div class="mt-0">
+                Name: <strong>{{activity.activity_name}}</strong><br>
+                Description: <strong>{{activity.description}}</strong><br>
+                Validator: <strong>{{activity.validator}}</strong><br>
+                Verification-Status: <strong>{{activity.verification_status}}</strong><br>
+                Rewarded-Points: <strong>{{activity.rewarded_points}}</strong><br>
+                Start-Date: <strong>{{activity.start_date}}</strong><br>
+                End-Date: <strong>{{activity.end_date}}</strong>
+            </div>    
+        {% endfor %}
+    </div>
+</div>
 
 {% endblock %}
