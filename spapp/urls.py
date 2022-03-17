@@ -32,7 +32,9 @@ urlpatterns += [
     path("manager/create/emphasis", views.create_emphasis, name="create_emphasis"),
     path("manager/create/validator",
          views.create_validator, name="create_validator"),
-    path("manager/delete/degree/<int:pk>", views.delete_degree, name="delete_degree")
+    path("manager/delete/degree/<int:pk>", views.delete_degree, name="delete_degree"),
+    path("manager/edit/degree/<int:pk>", views.edit_degree, name="edit_degree"),
+    path("manager/update/degree", views.update_degree, name="update_degree")
 
 
 ]

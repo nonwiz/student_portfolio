@@ -1,5 +1,5 @@
 from random import randint
-
+from django.http import JsonResponse
 from django import forms
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
@@ -64,13 +64,16 @@ class DashboardPage(LoginRequiredMixin, generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        student = Student.objects.get(user=self.request.user)
-        context = {
-            'activities': Activities.objects.filter(student=student),
-            'academic_recogs': AcademicRecognition.objects.filter(activity__student=student),
-            'ar_form': ARForm,
-            'v_form': ValidatorForm
-        }
+        try:
+            student = Student.objects.get(user=self.request.user)
+            context = {
+                'activities': Activities.objects.filter(student=student),
+                'academic_recogs': AcademicRecognition.objects.filter(activity__student=student),
+                'ar_form': ARForm,
+                'v_form': ValidatorForm
+            }
+        except:
+            print("Admin")
         return context
 
 
@@ -336,5 +339,28 @@ def delete_degree(req, pk):
     except:
         print("Deleting failed")
     return redirect("spapp:manager_settings")
+
+def edit_degree(req, pk):
+    cd = Degree.objects.get(pk=pk)
+    form = DegreeForm(initial={'name': cd.name, 'faculty': cd.faculty})
+    print(form.as_ul())
+    return JsonResponse({'form': form.as_ul()})
+
+def update_degree(req):
+    data = req.POST.dict()
+    try:
+        degree = DegreeForm(data)
+        if degree.is_valid():
+            deg = Degree.objects.get(pk=data["pk"])
+            updated_deg = DegreeForm(degree.cleaned_data, instance=deg).save()
+            print(deg, "Degree", degree.is_valid(), "Data", data, degree.errors.as_text)
+        messages.add_message(req, messages.SUCCESS, "You have successfully updated!")
+    except:
+        messages.add_message(req, messages.WARNING,
+                            "Unable to update the current degree.")
+    return redirect("spapp:manager_settings")
+
+
+    
 
 #  AR -> Activity -> Student

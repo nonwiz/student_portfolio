@@ -1,2 +1,7 @@
 ./theme/__pycache__/**
+./theme/__pycache__/
+./theme/__pycache__
 ./theme/static_src/node_modules/**
+spapp/__pycache__/**
+spapp/migrations/__pycache__/
+studentprofile/__pycache__/
