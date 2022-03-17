@@ -17,7 +17,9 @@ urlpatterns = [
     path("req_remove_account", views.remove_account_request,
          name="req_remove_account"),
     # url for creating validator
-    path("manage-academic-recognition", views.manage_ar, name="manage-ar"),
+    path("create-academic-recognition", views.create_ar, name="create-ar"),
+    path("update-academic-recognition/<pk>/",
+         views.update_ar, name="update-ar"),
     path("create-validator", views.create_validator, name="create-validator"),
 ]
 
@@ -25,7 +27,12 @@ urlpatterns = [
 urlpatterns += [
     path("manager", views.AdminDashboard.as_view(), name="manager_dashboard"),
     path("manager/settings", views.AdminSettings.as_view(), name="manager_settings"),
-    path("manager/create/degree", views.create_degree, name="create_degree")
+    path("manager/create/degree", views.create_degree, name="create_degree"),
+    path("manager/create/major", views.create_major, name="create_major"),
+    path("manager/create/emphasis", views.create_emphasis, name="create_emphasis"),
+    path("manager/create/validator",
+         views.create_validator, name="create_validator"),
+    path("manager/delete/degree/<int:pk>", views.delete_degree, name="delete_degree")
 
 
 ]

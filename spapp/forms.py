@@ -32,6 +32,7 @@ class ARForm(forms.ModelForm):
     class Meta:
         model = AcademicRecognition
         fields = '__all__'
+        exclude = ('activity',)
 
 
 class DegreeForm(forms.ModelForm):
@@ -55,4 +56,4 @@ class EmphasisForm(forms.ModelForm):
 class ValidatorForm(forms.ModelForm):
     class Meta:
         model = Validator
-        fields = '__all__'
+        fields = ['email', 'phone_number', 'name']

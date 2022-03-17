@@ -5,21 +5,22 @@
 
 <h2> Manage Degree </h2>
 <h3> List </h3>
-{{ degrees }}
+{% include 'components/manager/degree/list.html' with title="Degrees" data=degrees %}
 {% include 'components/manager/create_form.html' with form=form_degree title="Create Degree" url="/manager/create/degree" %}
 
 <h2> Manage Major </h2>
 {{ majors }}
-{% include 'components/manager/create_form.html' with form=form_major title="Create Major" %}
+{% include 'components/manager/create_form.html' with form=form_major title="Create Major" url="/manager/create/major" %}
 
 
 <h2> Manage Emphasis </h2>
 {{ emphasises }}
 
-{% include 'components/manager/create_form.html' with form=form_emphasis title="Create Emphasis" %}
+{% include 'components/manager/create_form.html' with form=form_emphasis title="Create Emphasis" url="/manager/create/emphasis" %}
 
 <h2> Validators </h2>
 {{ validators }}
-{{ form_validator.as_p }}
+
+{% include 'components/manager/create_form.html' with form=form_validator title="Create Validator" url="/manager/create/validator" %}
 
 {% endblock %}

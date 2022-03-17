@@ -2,11 +2,18 @@
 
 Web Application that allow students to build portfolio while guiding by the Student Administration.
 
-## Built with Django
-
-
 ## Issues
-- Student Settings page return Admin Errors -> Check if the user dont have model, give different message.
-- Sign up checking if the ID is the same.
-- Academic Recognition to Activity should switch to one to one.
-- 
+- [ ] Student Settings page return Admin Errors -> Check if the user dont have model, give different message.
+- [ ] Sign up checking if the ID is the same.
+- [ ] Academic Recognition to Activity should switch to one to one.
+- [ ] Admin can access user page but cannot do those operation. E.g. Dashboard Page.
+
+
+## Models
+- E.g: 
+    Bachelor of Arts Program in English, TESOL, Communication, Business Emphasis
+- Degree: bachelor of Arts 
+- Major: English
+- Emphasis: TESOL
+
+

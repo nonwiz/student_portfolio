@@ -1,19 +1,21 @@
-from django.http.response import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect
-from django.views import generic
+from random import randint
+
+from django import forms
+from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from .models import *
-from random import randint
-from django import forms
-from .forms import EmphasisForm, MajorForm, StudentForm, DegreeForm, ValidatorForm, ARForm
-from django.shortcuts import get_object_or_404
-from django.contrib import messages
-from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
+from django.views import generic
+
 from spapp.models import Student
+
+from .forms import *
+from .models import *
 
 
 # Logout user
@@ -62,29 +64,34 @@ class DashboardPage(LoginRequiredMixin, generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        student = Student.objects.get(user=self.request.user)
         context = {
-            'activities': Activities.objects.filter(student=Student.objects.get(user=self.request.user)),
-            'academic_recogs': AcademicRecognition.objects.filter(),
-            'ar_form': ARForm
+            'activities': Activities.objects.filter(student=student),
+            'academic_recogs': AcademicRecognition.objects.filter(activity__student=student),
+            'ar_form': ARForm,
+            'v_form': ValidatorForm
         }
         return context
 
 
-def manage_ar(req):
+def create_ar(req):
     try:
-        activity, status = Activities.objects.get_or_create(
+        activity = Activities.objects.create(
             student=req.user.student, activity_name="Academic Recognition")
-        id = req.POST.get('id')
         semester = req.POST.get('semester')
-        gpa = req.POST.get('gpa')
-        if id:
-            AcademicRecognition.objects.update(
-                id=id, activity=activity, semester=semester, gpa=gpa)
-        else:
-            AcademicRecognition.objects.create(
-                activity=activity, semester=semester, gpa=gpa)
+        semester, gpa = req.POST['semester'], req.POST['gpa']
+        AcademicRecognition.objects.create(
+            activity=activity, semester=semester, gpa=gpa)
     except:
         print('Current logged in user is not a student!')
+    return redirect('spapp:dashboard')
+
+
+def update_ar(req, pk):
+    form = ARForm(instance=AcademicRecognition.objects.get(
+        id=pk), data=req.POST)
+    if form.is_valid:
+        form.save()
     return redirect('spapp:dashboard')
 
 
@@ -159,14 +166,15 @@ class SettingsPage(LoginRequiredMixin, generic.TemplateView):
         context = super().get_context_data(**kwargs)
         try:
             # If Found student account is not found within the Request, return True.
-            context['student'] = Student.objects.get(user=self.request.user)
+            context['student'] = get_object_or_404(
+                Student, user=self.request.user)
             context['update_student'] = self.form_update_student()
             context['account_status'] = not bool(
                 len(AccountRemovalRequest.objects.filter(student=self.request.user.student)))
             return context
         except:
             messages.add_message(
-                self.request, messsages.WARNING, "You are not a student")
+                self.request, messages.WARNING, "You are not a student")
             return context
 
     def post(self, req):
@@ -206,17 +214,6 @@ def remove_account_request(req):
 
 
 # Administrator Views
-def create_validator(req):
-    email, phone, name = return_post_data(req.POST, ["email", "phone", "name"])
-    exist_validator = Validator.objects.filter(email=email).first()
-    if exist_validator:
-        print("Validator is already existed!")
-        return redirect('spapp:profile')
-    new_validator = Validator.objects.create(
-        name=name, email=email, phone_number=phone, created_by=req.user)
-    print(new_validator)
-    return redirect('spapp:profile')
-
 
 decorators = [staff_member_required(login_url='spapp:login')]
 
@@ -252,7 +249,7 @@ class AdminSettings(LoginRequiredMixin, generic.TemplateView):
             return context
         except:
             messages.add_message(
-                self.request, messsages.WARNING, "You are not a student")
+                self.request, messages.WARNING, "You are not a student")
             return context
 
     def post(self, req):
@@ -285,5 +282,59 @@ def create_degree(req):
     create_records(req, DegreeForm)
     return redirect("spapp:manager_settings")
 
+
+def create_major(req):
+    create_records(req, MajorForm)
+    return redirect("spapp:manager_settings")
+
+
+def create_emphasis(req):
+    create_records(req, EmphasisForm)
+    return redirect("spapp:manager_settings")
+
+
+def create_validator(req):
+    try:
+        print("validator called")
+        data = req.POST.dict()
+        exist_validator = Validator.objects.filter(email=data["email"])
+        if len(exist_validator):
+            print("Validator is already existed!")
+            messages.add_message(req, messages.WARNING,
+                                 "Unable to create data, validator already existed")
+            return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
+        else:
+            print(exist_validator, "validator not exist", data, data["email"])
+        if req.user.is_staff:
+            data["verified"] = True
+            print("adding verified to true")
+        data["created_by"] = req.user
+        model = ValidatorForm(data)
+        print(data, "reached here", model.is_valid())
+        if model.is_valid():
+            print("form is valid!")
+            model = ValidatorForm(data).save()
+            print(f"New {model} is created", model)
+        else:
+            print(model.errors)
+        messages.add_message(req, messages.SUCCESS,
+                             f"You have created {model} successfully")
+    except:
+        messages.add_message(req, messages.WARNING,
+                             "Unable to create data.")
+    return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
+
+
+def create_degree(req):
+    create_records(req, DegreeForm)
+    return redirect("spapp:manager_settings")
+
+def delete_degree(req, pk):
+    try:
+        deg = Degree.objects.get(pk=pk)
+        deg.delete()
+    except:
+        print("Deleting failed")
+    return redirect("spapp:manager_settings")
 
 #  AR -> Activity -> Student

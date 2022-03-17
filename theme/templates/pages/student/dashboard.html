@@ -3,7 +3,7 @@
 <div class="grid grid-cols-3 m-5 ml-36">
     <div>
         <b><h3>Create Academic-Recognition</h3></b>
-        <form method="post" class="border-solid rounded-lg pt-3" action="#">
+        <form method="post" class="border-solid rounded-lg pt-3" action="{% url 'spapp:create-ar' %}">
             {% csrf_token %}  
             {{ar_form.as_p}}
             <input type="submit" value="submit" class="bg-primary text-white rounded-lg p-2 border-solid" />
@@ -13,15 +13,12 @@
         <b><h3>Create Validator</h3></b>
         <form method="post" class="border-solid rounded-lg pt-3" action="#">
             {% csrf_token %}
-            <input type="text" placeholder="name" name="name" /><br><br>
-            <input type="text" placeholder="telephone" name="phone" /><br><br>
-            <input type="email" placeholder="email@email.com" name="email" />
-            <input type="submit" value="submit" class="bg-primary text-white rounded-lg p-2 border-solid" />
+            {{v_form.as_p}}
         </form>
     </div>
     <div>
         <b><h3>Create Academic-Recognition</h3></b>
-        <form method="post" class="border-solid rounded-lg pt-3" action="{% url 'spapp:manage-ar' %}">
+        <form method="post" class="border-solid rounded-lg pt-3" action="{% url 'spapp:create-ar' %}">
             {% csrf_token %}  
             {{ar_form.as_p}}
             <input type="submit" value="submit" class="bg-primary text-white rounded-lg p-2 border-solid" />
@@ -32,30 +29,43 @@
     <div>
         <b><h3>My Activities</h3></b><br>
         {% for activity in activities %}
-            <div class="mt-0">
-                Name: <strong>{{activity.activity_name}}</strong><br>
-                Description: <strong>{{activity.description}}</strong><br>
-                Validator: <strong>{{activity.validator}}</strong><br>
-                Verification-Status: <strong>{{activity.verification_status}}</strong><br>
-                Rewarded-Points: <strong>{{activity.rewarded_points}}</strong><br>
-                Start-Date: <strong>{{activity.start_date}}</strong><br>
-                End-Date: <strong>{{activity.end_date}}</strong>
-            </div>    
+            {% ifchanged %}
+                <div class="mt-0">
+                    Name: <strong>{{activity.activity_name}}</strong><br>
+                </div><br> 
+            {% endifchanged %}         
         {% endfor %}
     </div>
     <div>
-        <b><h3>My Academic Recognition</h3></b><br>
-        {% for activity in activities %}
-            <div class="mt-0">
-                Name: <strong>{{activity.activity_name}}</strong><br>
-                Description: <strong>{{activity.description}}</strong><br>
-                Validator: <strong>{{activity.validator}}</strong><br>
-                Verification-Status: <strong>{{activity.verification_status}}</strong><br>
-                Rewarded-Points: <strong>{{activity.rewarded_points}}</strong><br>
-                Start-Date: <strong>{{activity.start_date}}</strong><br>
-                End-Date: <strong>{{activity.end_date}}</strong>
-            </div>    
-        {% endfor %}
+        <b><h3>My Academic Recognition</h3></b><br>     
+        {% for ar in academic_recogs %}
+            <form method="post" action="{% url 'spapp:update-ar' ar.id %}">
+                {% csrf_token %}
+                <div class="mt-0">
+                    <label>Academic-Year</label>
+                    <input type="number" name="year" value="{{ar.year}}"><br>
+                    <label>Semester</label>
+                    <select name="semester">
+                        {% if ar.semester == 'first_semester' %}
+                            <option selected value="first_semester">First Semester</option>
+                            <option value="second_semester">Second Semester</option>
+                        {% else %}
+                            <option value="first_semester">First Semester</option>
+                            <option selected value="second_semester">Second Semester</option>
+                        {% endif %}                  
+                    </select><br>
+                    <label>GPA</label>
+                    <input type="number" max="4" min="0" name="gpa" value="{{ar.gpa}}"><br>
+                    Description: <strong>{{ar.activity.description}}</strong><br>
+                    Start-Date: <strong>{{ar.activity.start_date}}</strong><br>
+                    End-Date: <strong>{{ar.activity.end_date}}</strong><br>
+                    Validator: <strong>{{ar.activity.validator}}</strong><br>
+                    Verification-Status: <strong>{{ar.activity.verification_status}}</strong><br>                  
+                </div>    
+                <input type="submit" value="submit" class="bg-primary text-white rounded-lg p-2 border-solid" />
+                <br><span>==============================</span>
+            </form>
+        {% endfor %} 
     </div>
 </div>
 

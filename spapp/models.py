@@ -4,9 +4,8 @@ from django.db.models.fields import related
 from django.urls import reverse
 
 
-
 class Degree(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=40)
     faculty = models.CharField(max_length=50)
 
     """ the __str__ function overides the name of an object and displays it as a string """
@@ -14,7 +13,7 @@ class Degree(models.Model):
     def __str__(self):
         """ the 'f' before the string, allows you to include varibles in your string, which should 
             be inclosed in curly braces {} """
-        return f"{self.name}"
+        return f"Deg: {self.name} | Faculty: {self.faculty}"
 
 
 class Major(models.Model):
@@ -25,7 +24,7 @@ class Major(models.Model):
     name = models.CharField(max_length=30)
 
     def __str__(self):
-        return f"Major: {self.name}, Degree: {self.degree}"
+        return f"Major: {self.name}, Deg: {self.degree}"
 
 
 class Emphasis(models.Model):
@@ -33,7 +32,7 @@ class Emphasis(models.Model):
     name = models.CharField(max_length=30)
 
     def __str__(self):
-        return f"Degree: {self.name}, Major: {self.major}"
+        return f"Emphasis: {self.name}, Major: {self.major}"
 
 
 class Student(models.Model):
@@ -62,7 +61,7 @@ class Validator(models.Model):
     created_by = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return f"   {self.name}"
+        return f"{self.name}"
 
 
 class Activities(models.Model):
@@ -84,30 +83,31 @@ class Activities(models.Model):
 class AcademicRecognition(models.Model):
     SEMESTER = [('first_semester', 'First Semester'),
                 ('second_semester', 'Second Semester')]
-    activity = models.ForeignKey(
+    activity = models.OneToOneField(
         Activities, on_delete=models.CASCADE, related_name="academic_recognition")
     semester = models.CharField(max_length=30, choices=SEMESTER)
     gpa = models.FloatField(max_length=3)
+    year = models.IntegerField(default=2015)
 
     def __str__(self):
         return f"{self.activity.student} has {self.activity}"
 
 
 class CommunityService(models.Model):
-    activity = models.ForeignKey(
+    activity = models.OneToOneField(
         Activities, on_delete=models.CASCADE, related_name="community_service")
     location = models.CharField(max_length=50)
 
 
 class Project(models.Model):
-    activity = models.ForeignKey(
+    activity = models.OneToOneField(
         Activities, on_delete=models.CASCADE, related_name="project")
     resonsibility = models.TextField()
     location = models.CharField(max_length=50)
 
 
 class Research(models.Model):
-    activity = models.ForeignKey(
+    activity = models.OneToOneField(
         Activities, on_delete=models.CASCADE, related_name="research")
     co_author = models.CharField(max_length=100)
     link = models.CharField(max_length=50)
@@ -115,11 +115,13 @@ class Research(models.Model):
 
 
 class Internship(models.Model):
-    activity = models.ForeignKey(
+    activity = models.OneToOneField(
         Activities, on_delete=models.CASCADE, related_name="internship")
+    description = models.TextField(null=True)
 
 
 class Job(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=100)
     location = models.CharField(max_length=50)
