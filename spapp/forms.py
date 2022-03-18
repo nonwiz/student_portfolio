@@ -1,5 +1,7 @@
-from .models import Student, Degree, Major, Emphasis, Validator, AcademicRecognition
 from django import forms
+
+from .models import (AcademicRecognition, Degree, Emphasis, Major, Student,
+                     Validator)
 
 
 class StudentForm(forms.ModelForm):
@@ -56,4 +58,5 @@ class EmphasisForm(forms.ModelForm):
 class ValidatorForm(forms.ModelForm):
     class Meta:
         model = Validator
-        fields = ['email', 'phone_number', 'name']
+        fields = "__all__"
+        exclude = ["created_by", "verified"]

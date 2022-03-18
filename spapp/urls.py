@@ -36,6 +36,7 @@ urlpatterns += [
     path("manager/delete/degree/<int:pk>", views.delete_degree, name="delete_degree"),
     path("manager/delete/major/<int:pk>", views.delete_major, name="delete_major"),
     path("manager/delete/emphasis/<int:pk>", views.delete_emphasis, name="delete_emphasis"),
+    path("manager/delete/validator/<int:pk>", views.delete_validator, name="delete_validator"),
 
     path("manager/edit/degree/<int:pk>", views.edit_degree, name="edit_degree"),
     path("manager/update/degree", views.update_degree, name="update_degree"),
@@ -44,7 +45,11 @@ urlpatterns += [
     path("manager/update/major", views.update_major, name="update_major"),
 
     path("manager/edit/emphasis/<int:pk>", views.edit_emphasis, name="edit_emphasis"),
-    path("manager/update/emphasis", views.update_emphasis, name="update_emphasis")
+    path("manager/update/emphasis", views.update_emphasis, name="update_emphasis"),
+
+
+    path("manager/edit/validator/<int:pk>", views.edit_validator, name="edit_validator"),
+    path("manager/update/validator", views.update_validator, name="update_validator")
 
 
 

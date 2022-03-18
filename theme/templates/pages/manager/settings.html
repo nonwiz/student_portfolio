@@ -21,7 +21,8 @@
 {% include 'components/manager/create_form.html' with form=form_emphasis title="Create Emphasis" url="/manager/create/emphasis" %}
 
 <h2> Validators </h2>
-{{ validators }}
+
+{% include 'components/manager/validator/list.html' with title="Validators" data=validators %}
 
 {% include 'components/manager/create_form.html' with form=form_validator title="Create Validator" url="/manager/create/validator" %}
 

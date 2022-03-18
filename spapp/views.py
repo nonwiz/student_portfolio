@@ -297,34 +297,34 @@ def create_emphasis(req):
 
 
 def create_validator(req):
+    print("validator called")
+    data = req.POST.dict()
+    exist_validator = Validator.objects.filter(email=data["email"])
+    if len(exist_validator):
+        print("Validator is already existed!")
+        messages.add_message(req, messages.WARNING,
+                             "Unable to create data, validator already existed")
+        return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
+    else:
+        print(exist_validator, "validator not exist", data, data["email"])
     try:
-        print("validator called")
-        data = req.POST.dict()
-        exist_validator = Validator.objects.filter(email=data["email"])
-        if len(exist_validator):
-            print("Validator is already existed!")
-            messages.add_message(req, messages.WARNING,
-                                 "Unable to create data, validator already existed")
-            return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
-        else:
-            print(exist_validator, "validator not exist", data, data["email"])
-        if req.user.is_staff:
-            data["verified"] = True
-            print("adding verified to true")
-        data["created_by"] = req.user
         model = ValidatorForm(data)
         print(data, "reached here", model.is_valid())
         if model.is_valid():
             print("form is valid!")
-            model = ValidatorForm(data).save()
+            model = ValidatorForm(data).save(commit=False)
+            model.created_by = req.user
+            if req.user.is_staff:
+                model.verified = True
+            model.save()
             print(f"New {model} is created", model)
         else:
             print(model.errors)
         messages.add_message(req, messages.SUCCESS,
-                             f"You have created {model} successfully")
+                         f"You have created {model} successfully")
     except:
         messages.add_message(req, messages.WARNING,
-                             "Unable to create data.")
+                         "Unable to create data.")
     return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
 
 def delete_degree(req, pk):
@@ -416,6 +416,27 @@ def update_degree(req):
             deg = Degree.objects.get(pk=data["pk"])
             updated_deg = DegreeForm(degree.cleaned_data, instance=deg).save()
             print(deg, "Degree", degree.is_valid(), "Data", data, degree.errors.as_text)
+        messages.add_message(req, messages.SUCCESS, "You have successfully updated!")
+    except:
+        messages.add_message(req, messages.WARNING,
+                            "Unable to update the current degree.")
+    return redirect("spapp:manager_settings")
+
+ 
+def edit_validator(req, pk):
+    cv = Validator.objects.get(pk=pk)
+    form = ValidatorForm(initial={'name': cv.name, 'phone_number': cv.phone_number, 'email': cv.email, 'verified': cv.verified })
+    print(form.as_ul())
+    return JsonResponse({'form': form.as_ul()})
+
+def update_validator(req):
+    data = req.POST.dict()
+    try:
+        validator = ValidatorForm(data)
+        if validator.is_valid():
+            val = Validator.objects.get(pk=data["pk"])
+            updated_val = ValidatorForm(validator.cleaned_data, instance=val).save()
+            print(val, "validator", validator.is_valid(), "Data", data, validator.errors.as_text)
         messages.add_message(req, messages.SUCCESS, "You have successfully updated!")
     except:
         messages.add_message(req, messages.WARNING,
