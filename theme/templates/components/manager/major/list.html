@@ -1,15 +1,19 @@
-<h1> List {{ title }} </h1>
+<details open>
+  <summary> List of {{ title }} </summary>
+  <div class="p-4">
 
-{% for item in data %}
-<li>{{ item.pk }} {{ item.name }} {{ item.degree }} |
-  <div id="maj-{{ item.pk }}">
-    <button onClick=edit_major("{{ item.pk }}")> Edit </button> |
-    <button onClick=delete_major("{{ item.pk}}")>Delete Item</button>
+    {% for item in data %}
+    <li>{{ item.pk }} {{ item.name }} {{ item.degree }} |
+      <div id="maj-{{ item.pk }}">
+        <button onClick=edit_major("{{ item.pk }}")> Edit </button> |
+        <button onClick=delete_major("{{ item.pk}}")>Delete Item</button>
+      </div>
+
+    </li>
+
+    {% endfor %}
   </div>
-
-</li>
-
-{% endfor %}
+</details>
 
 
 

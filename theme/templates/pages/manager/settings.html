@@ -3,19 +3,12 @@
 {% block content %}
 <h1> Admin Settings </h1>
 
-<h2> Manage Degree </h2>
-<h3> List </h3>
 {% include 'components/manager/degree/list.html' with title="Degrees" data=degrees %}
-
 {% include 'components/manager/create_form.html' with form=form_degree title="Create Degree" url="/manager/create/degree" %}
 
-<h2> Manage Major </h2>
 {% include 'components/manager/major/list.html' with title="Majors" data=majors %}
 {% include 'components/manager/create_form.html' with form=form_major title="Create Major" url="/manager/create/major" %}
 
-
-<h2> Manage Emphasis </h2>
-{{ emphasises }}
 
 {% include 'components/manager/emphasis/list.html' with title="Emphasises" data=emphasises %}
 {% include 'components/manager/create_form.html' with form=form_emphasis title="Create Emphasis" url="/manager/create/emphasis" %}

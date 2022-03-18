@@ -1,16 +1,22 @@
-<h2>Form: {{ title }} </h2> 
-<br />
-action = {{ url }}
-<form method="post" id="create_form" action="{{ url }}" >
-    {% csrf_token %}
-    {{ form.as_ul }}
-<button type="submit" class="p-4 text-white rounded-lg bg-primary"  value="Submit">Update</button>
-</form>
+<details open>
+  <summary>
+    Form: {{ title }}
+  </summary>
+  <div class="p-4">
+    <form class="" method="post" id="create_form" action="{{ url }}">
+      {% csrf_token %}
+      <div class="">
+        {{ form.as_ul }}
+      </div>
+      <div>
+        <button type="submit" class="p-2 m-1 text-white rounded-lg bg-primary" value="Submit">Create</button>
+      </div>
+    </form>
+  </div>
+</details>
 
 <script>
 
 
 
 </script>
-
-
