@@ -1,50 +1,39 @@
 <h1> List {{ title }} </h1>
 
 {% for item in data %}
-    <li>{{ item.pk }} {{ item.name }} {{ item.faculty }} | 
-        <div id="deg-{{ item.pk }}"> 
-            <button onClick=edit_degree("{{ item.pk }}")> Edit </button> |
-        <button onClick=delete_degree("{{ item.pk}}")>Delete Item</button>
-        </div>
+<li>{{ item.pk }} {{ item.name }} {{ item.faculty }} |
+  <div id="deg-{{ item.pk }}">
+    <button onClick=edit_degree("{{ item.pk }}")> Edit </button> |
+    <button onClick=delete_degree("{{ item.pk}}")>Delete Item</button>
+  </div>
 
-    </li>
+</li>
 
 {% endfor %}
 
 
 
 <script>
-    const delete_degree = pk => {
-        console.log("request to delete pk", pk)
-        const divPk = document.querySelector(`#deg-${pk}`);
-        let url_mask = "{% url 'spapp:delete_degree' 12345 %}".replace(/12345/, pk); 
-        const ele = `{% include 'components/manager/confirm_action.html' with content="99Test" %}`.replace(/url/, url_mask).replace(/99Test/, "Deleting ");
-        
-        divPk.insertAdjacentHTML('beforeend', ele)
-        console.log(divPk, url_mask, ele);
+  const delete_degree = pk => {
+    console.log("request to delete pk", pk)
+    const divPk = document.querySelector(`#deg-${pk}`);
+    let url_mask = "{% url 'spapp:delete_degree' 12345 %}".replace(/12345/, pk);
+    const ele = `{% include 'components/manager/confirm_action.html' with content="99Test" %}`.replace(/url/, url_mask).replace(/99Test/, "Deleting ");
 
-    }
+    divPk.insertAdjacentHTML('beforeend', ele)
+    console.log(divPk, url_mask, ele);
 
- const edit_degree = async pk => {
-        console.log("request to edit pk", pk)
-        const divPk = document.querySelector(`#deg-${pk}`);
-        let url_mask = "{% url 'spapp:edit_degree' 12345 %}".replace(/12345/, pk); 
-        const data = await fetch(url_mask).then(res => res.json()) 
-        console.log("data", data)
-        const ele = `{% include 'components/manager/edit_form.html' with content="99Test" url="alienData88" pk="pk99" %}`.replace(/url/, url_mask).replace(/99Test/, data.form).replace(/alienData88/, "{% url 'spapp:update_degree' %}").replace(/pk99/, pk);
-        divPk.insertAdjacentHTML('beforeend', ele)
+  }
 
-    }
+  const edit_degree = async pk => {
+    console.log("request to edit pk", pk)
+    const divPk = document.querySelector(`#deg-${pk}`);
+    let url_mask = "{% url 'spapp:edit_degree' 12345 %}".replace(/12345/, pk);
+    const data = await fetch(url_mask).then(res => res.json())
+    console.log("data", data)
+    const ele = `{% include 'components/manager/edit_form.html' with content="99Test" url="alienData88" pk="pk99" %}`.replace(/url/, url_mask).replace(/99Test/, data.form).replace(/alienData88/, "{% url 'spapp:update_degree' %}").replace(/pk99/, pk);
+    divPk.insertAdjacentHTML('beforeend', ele)
 
-const cancelAction = () => {
-const actions = document.querySelectorAll("#action");
-actions.forEach(action => {
-console.log(action);
-action.className = "hidden";
-action.outterHTML = "";
-console.log("presseddd")
-})
-}
-
+  }
 
 </script>

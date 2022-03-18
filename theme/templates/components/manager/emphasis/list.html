@@ -1,0 +1,41 @@
+<h1> List {{ title }} </h1>
+
+{% for item in data %}
+<li>{{ item.pk }} {{ item.name }} {{ item.major }} |
+  <div id="emp-{{ item.pk }}">
+    <button onClick=edit_emphasis("{{ item.pk }}")> Edit </button> |
+    <button onClick=delete_emphasis("{{ item.pk}}")>Delete Item</button>
+  </div>
+
+</li>
+
+{% endfor %}
+
+
+
+<script>
+  const delete_emphasis = pk => {
+    console.log("request to delete pk", pk)
+    const divPk = document.querySelector(`#emp-${pk}`);
+    let url_mask = "{% url 'spapp:delete_emphasis' 12345 %}".replace(/12345/, pk);
+    const ele = `{% include 'components/manager/confirm_action.html' with content="99Test" %}`.replace(/url/, url_mask).replace(/99Test/, "Deleting ");
+
+    divPk.insertAdjacentHTML('beforeend', ele)
+    console.log(divPk, url_mask, ele);
+
+  }
+
+  const edit_emphasis = async pk => {
+    console.log("request to edit pk", pk)
+    const divPk = document.querySelector(`#emp-${pk}`);
+    let url_mask = "{% url 'spapp:edit_emphasis' 12345 %}".replace(/12345/, pk);
+    const data = await fetch(url_mask).then(res => res.json())
+    console.log("data", data)
+    const ele = `{% include 'components/manager/edit_form.html' with content="99Test" url="alienData88" pk="pk99" %}`.replace(/url/, url_mask).replace(/99Test/, data.form).replace(/alienData88/, "{% url 'spapp:update_emphasis' %}").replace(/pk99/, pk);
+    divPk.insertAdjacentHTML('beforeend', ele)
+
+  }
+
+
+
+</script>

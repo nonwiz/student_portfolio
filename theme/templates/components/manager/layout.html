@@ -21,5 +21,21 @@
 		{% include "components/manager/footer.html" %}
 	{% endblock %}
 
+  <script>
+
+    
+  const cancelAction = () => {
+    const actions = document.querySelectorAll("#action");
+    actions.forEach(action => {
+      console.log(action);
+      action.className = "hidden";
+      action.outterHTML = "";
+      console.log("presseddd")
+    })
+  }
+
+
+  </script>
+
 {% endblock %}
 

@@ -1,4 +1,5 @@
 from django.urls import path
+
 from . import views
 
 app_name = "spapp"
@@ -33,8 +34,18 @@ urlpatterns += [
     path("manager/create/validator",
          views.create_validator, name="create_validator"),
     path("manager/delete/degree/<int:pk>", views.delete_degree, name="delete_degree"),
+    path("manager/delete/major/<int:pk>", views.delete_major, name="delete_major"),
+    path("manager/delete/emphasis/<int:pk>", views.delete_emphasis, name="delete_emphasis"),
+
     path("manager/edit/degree/<int:pk>", views.edit_degree, name="edit_degree"),
-    path("manager/update/degree", views.update_degree, name="update_degree")
+    path("manager/update/degree", views.update_degree, name="update_degree"),
+
+    path("manager/edit/major/<int:pk>", views.edit_major, name="edit_major"),
+    path("manager/update/major", views.update_major, name="update_major"),
+
+    path("manager/edit/emphasis/<int:pk>", views.edit_emphasis, name="edit_emphasis"),
+    path("manager/update/emphasis", views.update_emphasis, name="update_emphasis")
+
 
 
 ]

@@ -1,12 +1,12 @@
 from random import randint
-from django.http import JsonResponse
+
 from django import forms
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -327,11 +327,6 @@ def create_validator(req):
                              "Unable to create data.")
     return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
 
-
-def create_degree(req):
-    create_records(req, DegreeForm)
-    return redirect("spapp:manager_settings")
-
 def delete_degree(req, pk):
     try:
         deg = Degree.objects.get(pk=pk)
@@ -339,6 +334,73 @@ def delete_degree(req, pk):
     except:
         print("Deleting failed")
     return redirect("spapp:manager_settings")
+
+
+def delete_major(req, pk):
+    try:
+        maj = Major.objects.get(pk=pk)
+        maj.delete()
+    except:
+        print("Deleting failed")
+    return redirect("spapp:manager_settings")
+
+def delete_emphasis(req, pk):
+    try:
+        emp = Emphasis.objects.get(pk=pk)
+        emp.delete()
+    except:
+        print("Deleting failed")
+    return redirect("spapp:manager_settings")
+
+
+def delete_validator(req, pk):
+    try:
+        val = Validator.objects.get(pk=pk)
+        val.delete()
+    except:
+        print("Deleting failed")
+    return redirect("spapp:manager_settings")
+
+
+def edit_major(req, pk):
+    cm = Major.objects.get(pk=pk)
+    form = MajorForm(initial={'name': cm.name, 'degree': cm.degree})
+    print(form.as_ul())
+    return JsonResponse({'form': form.as_ul()})
+
+def update_major(req):
+    data = req.POST.dict()
+    try:
+        major = MajorForm(data)
+        if major.is_valid():
+            maj = Major.objects.get(pk=data["pk"])
+            updated_maj = MajorForm(major.cleaned_data, instance=maj).save()
+        messages.add_message(req, messages.SUCCESS, "You have successfully updated!")
+    except:
+        messages.add_message(req, messages.WARNING,
+                            "Unable to update the current major.")
+    return redirect("spapp:manager_settings")
+
+
+def edit_emphasis(req, pk):
+    ce = Emphasis.objects.get(pk=pk)
+    form = EmphasisForm(initial={'name': ce.name, 'major': ce.major})
+    print(form.as_ul())
+    return JsonResponse({'form': form.as_ul()})
+
+def update_emphasis(req):
+    data = req.POST.dict()
+    try:
+        emphasis = EmphasisForm(data)
+        if emphasis.is_valid():
+            emp = Emphasis.objects.get(pk=data["pk"])
+            updated_emp = EmphasisForm(emphasis.cleaned_data, instance=emp).save()
+        messages.add_message(req, messages.SUCCESS, "You have successfully updated!")
+    except:
+        messages.add_message(req, messages.WARNING,
+                            "Unable to update the current degree.")
+    return redirect("spapp:manager_settings")
+
 
 def edit_degree(req, pk):
     cd = Degree.objects.get(pk=pk)
