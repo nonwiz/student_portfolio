@@ -1,21 +1,42 @@
 {% extends "components/student/layout.html" %}
 {% block content %}
-<div class="grid grid-cols-3 m-5 ml-36">
+<div class="grid grid-cols-1 md:grid-cols-3 m-5">
     <div>
+  {% include 'components/student/create_form.html' with title="Create Academic Recognition" form=ar_form  url="create-ar" %}
+
+  {% include 'components/student/create_form.html' with title="Create Community Service" form=cs_form activity=activity_form url="create-cs" %}
+
+
+  {% include 'components/student/create_form.html' with title="Create project" form=project_form  url="create-project" activity=activity_form %}
+
+  {% include 'components/student/create_form.html' with title="Create research" form=research_form  url="create-research" activity=activity_form %}
+  {% include 'components/student/create_form.html' with title="Create internship" form=activity_form  url="create-internship" %}
+  {% include 'components/student/create_form.html' with title="Create Previous Job" form=activity_form url="create-pj" %}
+
+      {% include 'components/student/create_form.html' with title="Create Academic Recognition" form=ar_form  url="create-ar" %}
+
+    {% comment %}
         <b><h3>Create Academic-Recognition</h3></b>
+
         <form method="post" class="border-solid rounded-lg pt-3" action="{% url 'spapp:create-ar' %}">
             {% csrf_token %}  
             {{ar_form.as_p}}
             <input type="submit" value="submit" class="bg-primary text-white rounded-lg p-2 border-solid" />
         </form>
+        {% endcomment %}
     </div>
     <div>
+
+    {% comment %}
         <b><h3>Create Validator</h3></b>
         <form method="post" class="border-solid rounded-lg pt-3" action="#">
             {% csrf_token %}
             {{v_form.as_p}}
         </form>
+
+        {% endcomment %}
     </div>
+    {% comment %}
     <div>
         <b><h3>Create Academic-Recognition</h3></b>
         <form method="post" class="border-solid rounded-lg pt-3" action="{% url 'spapp:create-ar' %}">
@@ -24,8 +45,9 @@
             <input type="submit" value="submit" class="bg-primary text-white rounded-lg p-2 border-solid" />
         </form>
     </div>
+    {% endcomment %}
 </div>
-<div class="grid grid-cols-3 m-5 ml-36">
+<div class="grid grid-cols-1 md:grid-cols-3 m-5 ">
     <div>
         <b><h3>My Activities</h3></b><br>
         {% for activity in activities %}
@@ -55,10 +77,10 @@
                         {% endif %}                  
                     </select><br>
                     <label>GPA</label>
-                    <input type="number" max="4" min="0" name="gpa" value="{{ar.gpa}}"><br>
+                    <input type="number" max="4" min="0" name="gpa" value="{{ar.gpa}}" /><br>
                     Description: <strong>{{ar.activity.description}}</strong><br>
-                    Start-Date: <strong>{{ar.activity.start_date}}</strong><br>
-                    End-Date: <strong>{{ar.activity.end_date}}</strong><br>
+                    Start-Date: <strong>{{ar.activity.from_date}}</strong><br>
+                    End-Date: <strong>{{ar.activity.to_date}}</strong><br>
                     Validator: <strong>{{ar.activity.validator}}</strong><br>
                     Verification-Status: <strong>{{ar.activity.verification_status}}</strong><br>                  
                 </div>    

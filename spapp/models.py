@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from django.db.models.fields import related
 from django.urls import reverse
 
@@ -61,15 +61,15 @@ class Validator(models.Model):
     created_by = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.email}"
 
 
-class Activities(models.Model):
+class Activity(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     activity_name = models.CharField(max_length=30, null=True)
     description = models.TextField(null=True)
-    start_date = models.DateField(null=True)
-    end_date = models.DateField(null=True)
+    from_date = models.DateField(null=True)
+    to_date = models.DateField(null=True)
     validator = models.ForeignKey(
         Validator, null=True, on_delete=models.SET_NULL)
     verification_status = models.BooleanField(default=False)
@@ -77,47 +77,72 @@ class Activities(models.Model):
     rewarded_points = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"{self.activity_name}"
+        return f"{self.student} {self.activity_name} {self.description} | {self.validator} {self.verification_status}"
 
 
 class AcademicRecognition(models.Model):
     SEMESTER = [('first_semester', 'First Semester'),
                 ('second_semester', 'Second Semester')]
     activity = models.OneToOneField(
-        Activities, on_delete=models.CASCADE, related_name="academic_recognition")
+        Activity, on_delete=models.CASCADE, related_name="academic_recognition")
     semester = models.CharField(max_length=30, choices=SEMESTER)
     gpa = models.FloatField(max_length=3)
     year = models.IntegerField(default=2015)
 
     def __str__(self):
-        return f"{self.activity.student} has {self.activity}"
+        return f"{self.activity.student} has {self.gpa} @ {self.semester}, {self.year}"
 
 
 class CommunityService(models.Model):
     activity = models.OneToOneField(
-        Activities, on_delete=models.CASCADE, related_name="community_service")
+        Activity, on_delete=models.CASCADE, related_name="community_service")
     location = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.activity.student} - {self.activity.description} at {self.location}"
+
 
 
 class Project(models.Model):
     activity = models.OneToOneField(
-        Activities, on_delete=models.CASCADE, related_name="project")
+        Activity, on_delete=models.CASCADE, related_name="project")
     resonsibility = models.TextField()
     location = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.activity.student} - {self.activity.description}"
+
+
 
 
 class Research(models.Model):
     activity = models.OneToOneField(
-        Activities, on_delete=models.CASCADE, related_name="research")
-    co_author = models.CharField(max_length=100)
-    link = models.CharField(max_length=50)
-    published_date = models.DateField()
+        Activity, on_delete=models.CASCADE, related_name="research")
+    co_authors = models.CharField(max_length=100, null=True)
+    link = models.CharField(max_length=50, null=True)
+    published_date = models.DateField(null=True)
 
+    def __str__(self):
+        return f"{self.activity.student} - {self.activity.description}"
 
 class Internship(models.Model):
     activity = models.OneToOneField(
-        Activities, on_delete=models.CASCADE, related_name="internship")
-    description = models.TextField(null=True)
+        Activity, on_delete=models.CASCADE, related_name="internship")
+
+    def __str__(self):
+        return f"{self.activity.student} - {self.activity.description}"
+
+
+class PreviousJob(models.Model):
+    activity = models.OneToOneField(
+        Activity, on_delete=models.CASCADE, related_name="previous_job")
+
+    def __str__(self):
+        return f"{self.activity.student} - {self.activity.description}"
+
+
+
+
 
 
 class Job(models.Model):

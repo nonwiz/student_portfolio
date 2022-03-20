@@ -1,3 +1,4 @@
+from datetime import date
 from random import randint
 
 from django import forms
@@ -67,9 +68,15 @@ class DashboardPage(LoginRequiredMixin, generic.TemplateView):
         try:
             student = Student.objects.get(user=self.request.user)
             context = {
-                'activities': Activities.objects.filter(student=student),
+                'activities': Activity.objects.filter(student=student),
                 'academic_recogs': AcademicRecognition.objects.filter(activity__student=student),
+                'activity_form': ActivityForm,
                 'ar_form': ARForm,
+                'cs_form': CSForm,
+                'project_form': ProjectForm,
+                'research_form': ResearchForm,
+                'internship_form': InternshipForm,
+                'pj_form': PJForm,
                 'v_form': ValidatorForm
             }
         except:
@@ -79,15 +86,80 @@ class DashboardPage(LoginRequiredMixin, generic.TemplateView):
 
 def create_ar(req):
     try:
-        activity = Activities.objects.create(
+        activity = Activity.objects.create(
             student=req.user.student, activity_name="Academic Recognition")
         semester = req.POST.get('semester')
-        semester, gpa = req.POST['semester'], req.POST['gpa']
+        semester, gpa, year = req.POST['semester'], req.POST['gpa'], req.POST['year']
         AcademicRecognition.objects.create(
-            activity=activity, semester=semester, gpa=gpa)
+            activity=activity, semester=semester, gpa=gpa, year=year)
     except:
         print('Current logged in user is not a student!')
     return redirect('spapp:dashboard')
+
+def create_cs(req):
+    try:
+        data = req.POST.dict()
+        activity = Activity.objects.create(
+            student=req.user.student, activity_name="Community Service", description=data["description"], from_date=date.fromisoformat(data['from_date']), to_date=date.fromisoformat(data['to_date']), validator=Validator.objects.get(pk=data["validator"])  )
+        CommunityService.objects.create(
+            activity=activity, location=data["location"]
+        )
+    except:
+        print('Current logged in user is not a student!')
+    return redirect('spapp:dashboard')
+
+def create_project(req):
+    try:
+        data = req.POST.dict()
+        activity = Activity.objects.create(
+            student=req.user.student, activity_name="Project", description=data["description"], from_date=date.fromisoformat(data['from_date']), to_date=date.fromisoformat(data['to_date']), validator=Validator.objects.get(pk=data["validator"])  )
+        Project.objects.create(
+            activity=activity, location=data["location"], responsibility=data["responsibility"]
+        )
+    except:
+        print('Current logged in user is not a student!')
+    return redirect('spapp:dashboard')
+
+
+def create_research(req):
+    try:
+        data = req.POST.dict()
+        activity = Activity.objects.create(
+            student=req.user.student, activity_name="Research", description=data["description"], from_date=date.fromisoformat(data['from_date']), to_date=date.fromisoformat(data['to_date']), validator=Validator.objects.get(pk=data["validator"])  )
+        Research.objects.create(
+            activity=activity, co_authors=data["co_authors"], link=data["link"], published_date=date.fromisoformat(data["published_date"])
+        )
+    except:
+        print('Current logged in user is not a student!')
+    return redirect('spapp:dashboard')
+
+
+def create_internship(req):
+    try:
+        data = req.POST.dict()
+        activity = Activity.objects.create(
+            student=req.user.student, activity_name="Internship", description=data["description"], from_date=date.fromisoformat(data['from_date']), to_date=date.fromisoformat(data['to_date']), validator=Validator.objects.get(pk=data["validator"])  )
+        Internship.objects.create(
+            activity=activity
+        )
+    except:
+        print('Current logged in user is not a student!')
+    return redirect('spapp:dashboard')
+
+
+# Previous job form
+def create_pj(req):
+    try:
+        data = req.POST.dict()
+        activity = Activity.objects.create(
+            student=req.user.student, activity_name="Previous Job", description=data["description"], from_date=date.fromisoformat(data['from_date']), to_date=date.fromisoformat(data['to_date']), validator=Validator.objects.get(pk=data["validator"])  )
+        PreviousJob.objects.create(
+            activity=activity
+        )
+    except:
+        print('Current logged in user is not a student!')
+    return redirect('spapp:dashboard')
+
 
 
 def update_ar(req, pk):

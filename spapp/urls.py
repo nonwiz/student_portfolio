@@ -18,9 +18,13 @@ urlpatterns = [
     path("req_remove_account", views.remove_account_request,
          name="req_remove_account"),
     # url for creating validator
-    path("create-academic-recognition", views.create_ar, name="create-ar"),
-    path("update-academic-recognition/<pk>/",
-         views.update_ar, name="update-ar"),
+    path("create-ar", views.create_ar, name="create-ar"),
+    path("create-cs", views.create_cs, name="create-cs"),
+    path("create-project", views.create_project, name="create-project"),
+    path("create-research", views.create_research, name="create-research"),
+    path("create-internship", views.create_internship, name="create-internship"),
+    path("create-pj", views.create_pj, name="create-pj"),
+    path("update-ar/<pk>/", views.update_ar, name="update-ar"),
     path("create-validator", views.create_validator, name="create-validator"),
 ]
 
