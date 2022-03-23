@@ -1,5 +1,30 @@
 {% extends "components/student/layout.html" %}
 {% block content %}
+
+<div class="bg-gray-200 px-16 pt-12 h-screen w-full flex gap-4">
+    <div class="w-2/3">
+      Incomming Job Opportunities
+  
+      <div class="bg-blue-400 mt-4 p-4">
+       job listing details
+       {{ jobs }}
+      </div>
+    </div>
+  
+    <div class="w-1/3">
+      Recent Activiites
+  
+      <div class="bg-blue-400 mt-4 p-4">
+        avitivites details
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
 <div class="grid grid-cols-1 md:grid-cols-3 m-5">
     <div>
   {% include 'components/student/create_form.html' with title="Create Academic Recognition" form=ar_form  url="create-ar" %}
@@ -47,7 +72,7 @@
     </div>
     {% endcomment %}
 </div>
-<div class="grid grid-cols-1 md:grid-cols-3 m-5 ">
+<div class="grid grid-cols-1 md:grid-cols-4 m-5 ">
     <div>
         <b><h3>My Activities</h3></b><br>
         {% for activity in activities %}
@@ -59,36 +84,42 @@
         {% endfor %}
     </div>
     <div>
-        <b><h3>My Academic Recognition</h3></b><br>     
-        {% for ar in academic_recogs %}
-            <form method="post" action="{% url 'spapp:update-ar' ar.id %}">
-                {% csrf_token %}
-                <div class="mt-0">
-                    <label>Academic-Year</label>
-                    <input type="number" name="year" value="{{ar.year}}"><br>
-                    <label>Semester</label>
-                    <select name="semester">
-                        {% if ar.semester == 'first_semester' %}
-                            <option selected value="first_semester">First Semester</option>
-                            <option value="second_semester">Second Semester</option>
-                        {% else %}
-                            <option value="first_semester">First Semester</option>
-                            <option selected value="second_semester">Second Semester</option>
-                        {% endif %}                  
-                    </select><br>
-                    <label>GPA</label>
-                    <input type="number" max="4" min="0" name="gpa" value="{{ar.gpa}}" /><br>
-                    Description: <strong>{{ar.activity.description}}</strong><br>
-                    Start-Date: <strong>{{ar.activity.from_date}}</strong><br>
-                    End-Date: <strong>{{ar.activity.to_date}}</strong><br>
-                    Validator: <strong>{{ar.activity.validator}}</strong><br>
-                    Verification-Status: <strong>{{ar.activity.verification_status}}</strong><br>                  
-                </div>    
-                <input type="submit" value="submit" class="bg-primary text-white rounded-lg p-2 border-solid" />
-                <br><span>==============================</span>
-            </form>
+        <b><h3>My Academic Recognition</h3></b><br>    
+        {% for ar in ars %}
+            <div class="mb-5">
+                Semester: {{ar.semester}} | 
+                GPA: {{ar.gpa}} |
+                Description: {{ar.activity.description}} |
+                Validator: {{ar.activity.validator}}
+                <button class="bg-primary text-white font-bold py-2 px-4 rounded">
+                    <a href="{% url 'spapp:update-ar' ar.id %}">Update</a>
+                </button><br><br>  
+            </div>         
+        {% endfor %} 
+    </div>
+    <div>
+        {% for pj in pjs %}
+            <div class="mb-5">
+                Semester: {{pj.activity}}
+                <button class="bg-primary text-white font-bold py-2 px-4 rounded">
+                    <a href="">Update</a>
+                </button><br><br>  
+            </div>         
         {% endfor %} 
     </div>
 </div>
 
 {% endblock %}
+
+<!-- <form method="post" action="{% url 'spapp:update-ar' ar_form.instance.id %}">
+    {% csrf_token %}
+    {{ar_form.as_p}}
+    <input type="submit" value="submit" class="bg-primary text-white rounded-lg p-2 border-solid" />
+    <br><span>==============================</span>
+</form> -->
+
+<!-- Description: <strong>{{ar.activity.description}}</strong><br>
+Start-Date: <strong>{{ar.activity.from_date}}</strong><br>
+End-Date: <strong>{{ar.activity.to_date}}</strong><br>
+Validator: <strong>{{ar.activity.validator}}</strong><br>
+Verification-Status: <strong>{{ar.activity.verification_status}}</strong><br> -->

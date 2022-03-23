@@ -8,16 +8,20 @@
 
 {% block body %}
 
-	{% block header %}
-		{% include "components/student/header.html" %}
-	{% endblock %}
+	<main class="flex justify-center min-h-screen w-full">
+		<section class="container mx-auto ">
+			{% block header %}
+				{% include "components/student/header.html" %}
+			{% endblock %}
 
-	{% block content%}
-	{% endblock %}
+			{% block content%}
+			{% endblock %}
 
-	{% block footer %}
-		{% include "components/student/footer.html" %}
-	{% endblock %}
+			{% block footer %}
+				{% include "components/student/footer.html" %}
+			{% endblock %}
+		</section>
+	</main>
 
 {% endblock %}
 

@@ -2,4 +2,11 @@
 
 {% block content %}
 <h1> Admin dashboard </h1>
+
+
+{% include 'components/manager/job/list.html' with title="jobs" data=jobs %}
+
+{% include 'components/manager/create_form.html' with form=form_job title="Add Job" url="/manager/create/job" %}
+
+
 {% endblock %}

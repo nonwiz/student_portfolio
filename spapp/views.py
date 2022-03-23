@@ -65,22 +65,21 @@ class DashboardPage(LoginRequiredMixin, generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        try:
-            student = Student.objects.get(user=self.request.user)
-            context = {
-                'activities': Activity.objects.filter(student=student),
-                'academic_recogs': AcademicRecognition.objects.filter(activity__student=student),
-                'activity_form': ActivityForm,
-                'ar_form': ARForm,
-                'cs_form': CSForm,
-                'project_form': ProjectForm,
-                'research_form': ResearchForm,
-                'internship_form': InternshipForm,
-                'pj_form': PJForm,
-                'v_form': ValidatorForm
-            }
-        except:
-            print("Admin")
+        student = Student.objects.get(user=self.request.user)
+        context = {
+            'jobs': Job.objects.all(),
+            'activities': Activity.objects.filter(student=student),
+            'ars': AcademicRecognition.objects.filter(activity__student=student),
+            'pjs': PreviousJob.objects.filter(activity__student=student),
+            'activity_form': ActivityForm,
+            'ar_form': ARForm,
+            'cs_form': CSForm,
+            'project_form': ProjectForm,
+            'research_form': ResearchForm,
+            'internship_form': InternshipForm,
+            'pj_form': PJForm,
+            'v_form': ValidatorForm
+        }
         return context
 
 
@@ -162,12 +161,21 @@ def create_pj(req):
 
 
 
-def update_ar(req, pk):
-    form = ARForm(instance=AcademicRecognition.objects.get(
-        id=pk), data=req.POST)
-    if form.is_valid:
-        form.save()
-    return redirect('spapp:dashboard')
+# def update_ar(req, pk):
+#     form = ARForm(instance=AcademicRecognition.objects.get(
+#         id=pk), data=req.POST)
+#     if form.is_valid:
+#         form.save()
+#     return redirect('spapp:dashboard')
+
+
+class ARUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = AcademicRecognition
+    fields = ['gpa', 'semester']
+    template_name = 'pages/student/update_ar.html'
+    success_url = reverse_lazy('spapp:dashboard')
+
+    # def get_object(self)
 
 
 class RegisterPage(generic.TemplateView):
@@ -297,6 +305,30 @@ decorators = [staff_member_required(login_url='spapp:login')]
 class AdminDashboard(LoginRequiredMixin, generic.TemplateView):
     login_url = "spapp:login"
     template_name = "pages/manager/dashboard.html"
+    form_job = JobForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            context = {
+               'form_job': self.form_job(),
+               'jobs': Job.objects.all(),
+            }
+            return context
+        except:
+            messages.add_message(
+                self.request, messages.WARNING, "You are not the admin")
+            return context
+
+    def post(self, req):
+        try:
+            data = req.POST.dict()
+            print("SENT to POST", data)
+        except:
+            messages.add_message(req, messages.WARNING,
+                                 "Unable to update the current student data.")
+        return redirect("spapp:manager_settings")
+
 
 
 @method_decorator(decorators, name='dispatch')
@@ -367,6 +399,26 @@ def create_emphasis(req):
     create_records(req, EmphasisForm)
     return redirect("spapp:manager_settings")
 
+def create_job(req):
+    print("Creating job")
+    data = req.POST.dict()
+    data["created_by"] = req.user
+    try:
+        model = JobForm(data)
+        print(data, "reached here", model.is_valid())
+        if model.is_valid():
+            print("form is valid!")
+            model.save()
+            print(f"New {model} is created", model)
+        else:
+            print(model.errors)
+        messages.add_message(req, messages.SUCCESS,
+                         f"You have created {model} successfully")
+    except:
+        messages.add_message(req, messages.WARNING,
+                         "Unable to create data.")
+    return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
+
 
 def create_validator(req):
     print("validator called")
@@ -398,6 +450,15 @@ def create_validator(req):
         messages.add_message(req, messages.WARNING,
                          "Unable to create data.")
     return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
+
+def delete_job(req, pk):
+    try:
+        deg = Job.objects.get(pk=pk)
+        deg.delete()
+    except:
+        print("Deleting failed")
+    return redirect("spapp:manager_dashboard")
+
 
 def delete_degree(req, pk):
     try:
@@ -433,12 +494,32 @@ def delete_validator(req, pk):
         print("Deleting failed")
     return redirect("spapp:manager_settings")
 
+def edit_job(req, pk):
+    cj = Job.objects.get(pk=pk)
+    form = JobForm(initial={'title': cj.title, 'description': cj.description, 'location': cj.location, 'email': cj.email, 'phone_number': cj.phone_number, 'website': cj.website})
+    print(form.as_ul())
+    return JsonResponse({'form': form.as_ul()})
+
 
 def edit_major(req, pk):
     cm = Major.objects.get(pk=pk)
     form = MajorForm(initial={'name': cm.name, 'degree': cm.degree})
     print(form.as_ul())
     return JsonResponse({'form': form.as_ul()})
+
+def update_job(req):
+    data = req.POST.dict()
+    try:
+        job = JobForm(data)
+        if job.is_valid():
+            maj = Job.objects.get(pk=data["pk"])
+            updated_maj = JobForm(job.cleaned_data, instance=maj).save()
+        messages.add_message(req, messages.SUCCESS, "You have successfully updated!")
+    except:
+        messages.add_message(req, messages.WARNING,
+                            "Unable to update the current job.")
+    return redirect("spapp:manager_dashboard")
+
 
 def update_major(req):
     data = req.POST.dict()

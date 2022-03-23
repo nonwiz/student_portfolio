@@ -146,13 +146,17 @@ class PreviousJob(models.Model):
 
 
 class Job(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=50)
-    description = models.CharField(max_length=100)
-    location = models.CharField(max_length=50)
-    email = models.EmailField()
-    phone_number = models.CharField(max_length=20)
-    website = models.CharField(max_length=50)
+    description = models.TextField(null=True)
+    location = models.CharField(max_length=50, null=True)
+    email = models.EmailField(null=True)
+    phone_number = models.CharField(max_length=20, null=True)
+    website = models.CharField(max_length=50, null=True)
+
+    def __str__(self):
+        return f"{self.title}"
+
 
 
 class AccountRemovalRequest(models.Model):

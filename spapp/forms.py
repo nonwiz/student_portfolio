@@ -126,5 +126,6 @@ class ValidatorForm(forms.ModelForm):
 
 class JobForm(forms.ModelForm):
     class Meta:
-        model = Emphasis
+        model = Job
         fields = '__all__'
+        exclude = ["created_by"]
