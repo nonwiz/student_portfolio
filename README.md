@@ -1,6 +1,6 @@
 # Student Profile
 
-Web Application that allow students to build portfolio while guiding by the Student Administration.
+Web Application that allows students to build thier resume with the guidance of the Student Administration.
 
 ## Issues
 - [ ] Student Settings page return Admin Errors -> Check if the user dont have model, give different message.
