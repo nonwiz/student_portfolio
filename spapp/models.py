@@ -44,6 +44,7 @@ class Student(models.Model):
     bio_char = models.CharField(max_length=100, null=True)
     interests = models.CharField(max_length=100, null=True)
     phone_number = models.CharField(max_length=12, null=True)
+    image = models.ImageField(upload_to='theme/static/user_image')
     website = models.CharField(max_length=12, null=True)
 
     def __str__(self):
