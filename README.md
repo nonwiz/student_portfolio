@@ -16,4 +16,7 @@ Web Application that allows students to build thier resume with the guidance of 
 - Major: English
 - Emphasis: TESOL
 
+# Tailwind
+cd theme/static_src/; npm run dev
+
 
