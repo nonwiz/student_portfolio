@@ -5,6 +5,8 @@
  * https://unpkg.com/browse/tailwindcss@latest/stubs/defaultConfig.stub.js
  */
 
+const colors = require('tailwindcss/colors')
+
 module.exports = {
   content: [
     /**
@@ -43,6 +45,7 @@ module.exports = {
         red: "#c01f48" /* for errors */,
         other: "#007bd6" /* blue */,
         lightGrey: "#e5e5e4" /* for background */,
+        teal: colors.teal,
       },
     },
   },
