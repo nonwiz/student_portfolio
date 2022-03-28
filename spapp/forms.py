@@ -125,6 +125,13 @@ class ValidatorForm(forms.ModelForm):
         exclude = ["created_by", "verified"]
 
 class JobForm(forms.ModelForm):
+    title = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class': 'bg-red p-2'
+            }
+        ))
+
+
     class Meta:
         model = Job
         fields = '__all__'

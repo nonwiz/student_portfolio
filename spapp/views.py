@@ -65,21 +65,24 @@ class DashboardPage(LoginRequiredMixin, generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        student = Student.objects.get(user=self.request.user)
-        context = {
-            'jobs': Job.objects.all(),
-            'activities': Activity.objects.filter(student=student),
-            'ars': AcademicRecognition.objects.filter(activity__student=student),
-            'pjs': PreviousJob.objects.filter(activity__student=student),
-            'activity_form': ActivityForm,
-            'ar_form': ARForm,
-            'cs_form': CSForm,
-            'project_form': ProjectForm,
-            'research_form': ResearchForm,
-            'internship_form': InternshipForm,
-            'pj_form': PJForm,
-            'v_form': ValidatorForm
-        }
+        try:
+            student = Student.objects.get(user=self.request.user)
+            context = {
+                'jobs': Job.objects.all(),
+                'activities': Activity.objects.filter(student=student),
+                'ars': AcademicRecognition.objects.filter(activity__student=student),
+                'pjs': PreviousJob.objects.filter(activity__student=student),
+                'activity_form': ActivityForm,
+                'ar_form': ARForm,
+                'cs_form': CSForm,
+                'project_form': ProjectForm,
+                'research_form': ResearchForm,
+                'internship_form': InternshipForm,
+                'pj_form': PJForm,
+                'v_form': ValidatorForm
+            }
+        except:
+            print('Not a student!')
         return context
 
 

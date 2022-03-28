@@ -5,8 +5,8 @@
 
 <h1> Settings </h1>
 <h2> Student </h2>
-{{ student }}
-
+{{ student.image.url }}
+<img height="100px" width="100px" src="{{student.image.url}}"></img>
 
 <hr />
 {% include "components/student/update_account_detail.html" with form=update_student  %}
