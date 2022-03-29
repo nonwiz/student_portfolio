@@ -19,6 +19,7 @@ urlpatterns = [
          name="req_remove_account"),
     # url for managing academic recognition
     path("update-ar/<pk>/", views.ARUpdateView.as_view(), name="update-ar"),
+    path("update-profile/", views.update_profile, name="update-profile"),
     # url for creating validator
     path("create-ar", views.create_ar, name="create-ar"),
     path("create-cs", views.create_cs, name="create-cs"),

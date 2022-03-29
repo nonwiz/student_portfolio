@@ -16,8 +16,10 @@ class StudentForm(forms.ModelForm):
     #         'type': 'date',
     #         }
     #     ))
+    image = forms.ImageField(required=False)
+    interests = forms.CharField(required=False)
 
-    nationality = forms.CharField(widget=forms.TextInput(
+    nationality = forms.CharField(required=False, widget=forms.TextInput(
         attrs={
             'type': 'text',
             'placeholder': 'Khmer',

@@ -254,7 +254,7 @@ class SettingsPage(LoginRequiredMixin, generic.TemplateView):
             # If Found student account is not found within the Request, return True.
             context['student'] = get_object_or_404(
                 Student, user=self.request.user)
-            context['update_student'] = self.form_update_student()
+            context['update_student'] = self.form_update_student(instance=context["student"])
             context['account_status'] = not bool(
                 len(AccountRemovalRequest.objects.filter(student=self.request.user.student)))
             return context
@@ -265,22 +265,43 @@ class SettingsPage(LoginRequiredMixin, generic.TemplateView):
 
     def post(self, req):
         print("Setting page called")
+        try:
+            data = req.POST.dict()
+            update_student = self.form_update_student(req.POST)
+            if update_student.is_valid():
+                student = Student.objects.get(user=req.user)
+                form = self.form_update_student(
+                        data, instance=student)
+                form.save()
+                print("Saving", data, form, form.errors)
+            else:
+                print("Errors", update_student.errors, req)
+                messages.add_message(req, messages.INFO,
+                                 update_student.errors.as_text)
+        except:
+            messages.add_message(req, messages.WARNING,
+                                 "Unable to update the current student data.")
+        return redirect("spapp:settings")
+
+def update_profile(req):
+    try:
         data = req.POST.dict()
-        update_student = self.form_update_student(req.POST, req.FILES)
+        update_student = StudentForm(req.POST, req.FILES)
         if update_student.is_valid():
             student = Student.objects.get(user=req.user)
-            data["image"] = req.FILES["image"]
-            form = self.form_update_student(
+            form = StudentForm(
                     data, req.FILES, instance=student)
             form.save()
             print("Saving", data, form, form.errors)
         else:
             print("Errors", update_student.errors, req)
             messages.add_message(req, messages.INFO,
-                                 update_student.errors.as_text)
+                             update_student.errors.as_text)
+    except:
         messages.add_message(req, messages.WARNING,
-                                 "Unable to update the current student data.")
-        return redirect("spapp:settings")
+                             "Unable to update the current student data.")
+ 
+    return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
 
 
 # Student request to remove their account
