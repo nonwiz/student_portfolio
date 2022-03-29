@@ -1,15 +1,24 @@
-<details open>
+<details class="border-solid open:border-2 m-2 border-primary p-2 rounded-md" open>
   <summary>
-    Form: {{ title }}
+    {{ title }}
   </summary>
-  <div class="p-4">
+  <div class="">
     <form class="" method="post" id="create_form" action="{{ url }}">
       {% csrf_token %}
+      {% for hidden in form.hidden_fields %}
+      {{ hidden }}
+      {% endfor %}
       <div class="">
-        {{ form.as_ul }}
+        {% for field in form.visible_fields %}
+        <div>
+          <label for="id_{{ field.label|lower }}">{{ field.label }}</label>
+          {{ field }}
+        </div>
+        {% endfor %}
+
       </div>
       <div>
-        <button type="submit" class="p-2 m-1 text-white rounded-lg bg-primary" value="Submit">Create</button>
+        <button type="submit" class="bg-primary hover:bg-secondary p-2 rounded-md text-white">Create</button>
       </div>
     </form>
   </div>

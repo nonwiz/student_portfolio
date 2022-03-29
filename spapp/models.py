@@ -13,7 +13,7 @@ class Degree(models.Model):
     def __str__(self):
         """ the 'f' before the string, allows you to include varibles in your string, which should 
             be inclosed in curly braces {} """
-        return f"Deg: {self.name} | Faculty: {self.faculty}"
+        return f"{self.name}"
 
 
 class Major(models.Model):
@@ -24,7 +24,7 @@ class Major(models.Model):
     name = models.CharField(max_length=30)
 
     def __str__(self):
-        return f"Major: {self.name}, Deg: {self.degree}"
+        return f"{self.name}"
 
 
 class Emphasis(models.Model):
@@ -32,7 +32,7 @@ class Emphasis(models.Model):
     name = models.CharField(max_length=30)
 
     def __str__(self):
-        return f"Emphasis: {self.name}, Major: {self.major}"
+        return f"{self.name}"
 
 
 class Student(models.Model):

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 h1 {
-    @apply text-2xl;
+    @apply text-3xl;
 }
 
 h2 {
@@ -14,3 +14,45 @@ h3 {
     @apply text-2xl;
 }
 
+form {
+  @apply m-2 p-2;
+}
+
+textarea {
+  @apply w-full bg-rose-500;
+}
+
+form div {
+  @apply flex my-2 flex-col;
+}
+
+input[type=text] {
+  @apply rounded-md;
+}
+
+select {
+  @apply rounded-md;
+}
+input[type=submit] {
+  @apply w-20;
+}
+
+label {
+  @apply text-gray-500;
+}
+
+table {
+  @apply min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700;
+}
+
+table {
+  @apply bg-gray-100 dark:bg-gray-700;
+}
+
+th {
+  @apply p-4;
+}
+
+td {
+  @apply py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap;
+}
