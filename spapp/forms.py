@@ -27,7 +27,7 @@ class StudentForm(forms.ModelForm):
 
     class Meta:
         model = Student
-        fields = ['interests',  'nationality']
+        fields = ('interests',  'nationality', 'image')
 
 # Activity Form
 class ActivityForm(forms.ModelForm):

@@ -264,19 +264,21 @@ class SettingsPage(LoginRequiredMixin, generic.TemplateView):
             return context
 
     def post(self, req):
-        try:
-            data = req.POST.dict()
-            update_student = self.form_update_student(data)
-            if update_student.is_valid():
-                student = Student.objects.get_object_or_404(user=req.user)
-                form = self.form_update_student(
-                    update_student.cleaned_data, instance=student)
-                form.save()
-            else:
-                messages.add_message(req, messages.INFO,
-                                     update_student.errors.as_text)
-        except:
-            messages.add_message(req, messages.WARNING,
+        print("Setting page called")
+        data = req.POST.dict()
+        update_student = self.form_update_student(req.POST, req.FILES)
+        if update_student.is_valid():
+            student = Student.objects.get(user=req.user)
+            data["image"] = req.FILES["image"]
+            form = self.form_update_student(
+                    data, req.FILES, instance=student)
+            form.save()
+            print("Saving", data, form, form.errors)
+        else:
+            print("Errors", update_student.errors, req)
+            messages.add_message(req, messages.INFO,
+                                 update_student.errors.as_text)
+        messages.add_message(req, messages.WARNING,
                                  "Unable to update the current student data.")
         return redirect("spapp:settings")
 

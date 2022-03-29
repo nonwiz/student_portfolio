@@ -1,4 +1,4 @@
-# Student Profile
+# Student Profile => Student Portfolio
 
 Web Application that allows students to build thier resume with the guidance of the Student Administration.
 
