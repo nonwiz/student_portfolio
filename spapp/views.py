@@ -337,6 +337,7 @@ class AdminDashboard(LoginRequiredMixin, generic.TemplateView):
         context = super().get_context_data(**kwargs)
         try:
             context = {
+            'activities': Activity.objects.all(),
                'form_job': self.form_job(),
                'jobs': Job.objects.all(),
             }

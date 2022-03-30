@@ -18,6 +18,8 @@ class StudentForm(forms.ModelForm):
     #     ))
     image = forms.ImageField(required=False)
     interests = forms.CharField(required=False)
+    website = forms.CharField(required=False)
+    bio_char = forms.CharField(required=False, widget=forms.Textarea)
 
     nationality = forms.CharField(required=False, widget=forms.TextInput(
         attrs={
@@ -29,7 +31,7 @@ class StudentForm(forms.ModelForm):
 
     class Meta:
         model = Student
-        fields = ('interests',  'nationality', 'image')
+        fields = ('interests',  'nationality', 'image', 'bio_char', 'website', 'major')
 
 # Activity Form
 class ActivityForm(forms.ModelForm):
@@ -129,9 +131,11 @@ class ValidatorForm(forms.ModelForm):
 class JobForm(forms.ModelForm):
     title = forms.CharField(widget=forms.TextInput(
         attrs={
-            'class': 'bg-red p-2'
+            'class': 'p-2'
             }
         ))
+    website = forms.CharField(required=False)
+    phone_number = forms.CharField(required=False)
 
 
     class Meta:

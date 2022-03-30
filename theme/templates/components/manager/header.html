@@ -1,14 +1,14 @@
-<div class="bg-secondary text-gray-50">
-    <div class="flex flex-row justify-between px-2 py-2 gap-2">
-        <!-- For desktop -->
-        <div>
-            <a href="{% url 'spapp:manager_dashboard' %}"> Welcome {{ user }} {{ user.first_name }}! </a>
-        </div>
-        <div class="flex flex-row justify-between gap-3">
-            <a href="{% url 'spapp:manager_dashboard' %}"> Home </a>
-            <a href="{% url 'spapp:manager_settings' %}"> Settings </a>
-            <a href="{% url 'spapp:logout' %}" class="px-1 bg-red "> Sign out </a>
-        </div>
-    </div>
+{% with home="/manager" settings="/manager/settings" rp=request.get_full_path %}
+<div class="px-16 md:px-32 xl:px-48 bg-sky-500 py-2 flex justify-between w-full text-gray-100">
+  <div class="flex gap-4">
+    <a class="p-2">{{ user }}</a>
+    <a class='p-2 {% if rp == home %} bg-sky-400 rounded-lg  {% endif %}' href="{{ home }}"> Home </a>
+    <a class='p-2 {% if rp == settings %} bg-sky-400 rounded-lg  {% endif %}' href="{{ settings }}"> Settings </a>
+
+  </div>
+
+  <a href="{% url 'spapp:logout' %}" class="p-2 rounded-lg hover:bg-red "> Sign out </a>
+  {{ name }}
 
 </div>
+{% endwith %}

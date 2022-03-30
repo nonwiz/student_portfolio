@@ -1,13 +1,92 @@
 {% extends 'components/manager/layout.html' %}
 
 {% block content %}
-<h1> Admin dashboard </h1>
-<h1 class="my-80 py-8 bg-teal-400"> Admin dashboard </h1>
+  <section class="py-8 px-4 md:px-8 xl:px-48  flex justify-between  gap-4 flex-col lg:flex-row ">
+    <div>
+      <p class="text-xl md:text-2xl xl:text-3xl font-bold">Howdy, {{ user }}</p>
+      <span class="text-lg">Welcome back!</span>
+    </div>
+  
+  </section>
+<section class="py-8 px-4 md:px-8 xl:px-48 bg-gray-100 flex justify-between  gap-4 flex-col lg:flex-row ">
+
+  <div class="w-full lg:w-2/3">
+    <div class="flex flex-col">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <table class="min-w-full">
+          <thead class="border-b">
+            <tr>
+              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                Student ID
+              </th>
+              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                Type
+              </th>
+              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                Refer
+              </th>
+              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for activity in activities %}
+            <tr class="border-b">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ activity.student.id_number }}</td>
+              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                {{ activity.activity_name }}
+              </td>
+              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                {{ activity.validator}}
+              </td>
+              <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                Approve | Reject
+              </td>
+            </tr>
+            {% endfor %}
+    
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
 
+  </div>
+
+
+  <div class="w-auto lg:w-1/3 p-4">
 {% include 'components/manager/job/list.html' with title="jobs" data=jobs %}
+            <button class="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded" onClick="handleUpdate()">
+              Add Job
+            </button>
+ 
+  </div>
 
+</section>
+ 
+
+
+<dialog class="open:fixed open:inset-0 open:flex open:justify-center open:p-20 bg-transparent "  id="add_job">
+   <div class="bg-gray-100 w-[800px] rounded-md">
+    <button onClick="closeDialog()" class="text-rose-800 float-right p-4 hover:text-rose-300"> X </button>
 {% include 'components/manager/create_form.html' with form=form_job title="Add Job" url="/manager/create/job" %}
+   </div>
+</dialog>
+
+<script>
+  const add_job = document.querySelector("#add_job")
+
+  const handleUpdate = (e) => {
+      add_job.open = true;
+    }
+
+
+</script>
 
 
 {% endblock %}

@@ -1,16 +1,17 @@
 <details open>
   <summary> List of {{ title }} </summary>
-  <div class="p-4">
-    {% for item in data %}
-    <li>{{ item }} 
-      <div id="jb-{{ item.pk }}">
-        <button onClick=edit_job("{{ item.pk }}")> Edit </button> |
-        <button onClick=delete_job("{{ item.pk}}")>Delete Item</button>
-      </div>
+  <div class="p-2">
+    <ul class="list-none flex flex-col gap-2">
+      {% for item in data %}
+      <li class="">{{ item }}
+        <div id="jb-{{ item.pk }}">
+          <button onClick=edit_job("{{ item.pk }}")> Edit </button> |
+          <button onClick=delete_job("{{ item.pk}}")>Delete Item</button>
+        </div>
 
-    </li>
-
-    {% endfor %}
+      </li>
+      {% endfor %}
+    </ul>
   </div>
 </details>
 

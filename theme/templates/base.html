@@ -29,6 +29,16 @@
 	</div>
 	{% endblock %}
 	<script>
+    
+    const closeDialog = (e) => {
+      document.querySelectorAll('dialog').forEach(d => { 
+          d.open = false;
+        });
+
+     
+      
+    }
+
 		{% if messages %}
 			{% for message in messages %}
 			console.log("{{ message }}, {{ message.tags }}");

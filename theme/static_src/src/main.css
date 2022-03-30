@@ -2,24 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-h1 {
-    @apply text-3xl;
-}
 
-h2 {
-    @apply text-3xl;
-}
-
-h3 {
-    @apply text-2xl;
-}
 
 form {
   @apply m-2 p-2;
 }
 
 textarea {
-  @apply w-full bg-rose-500;
+  @apply w-full;
 }
 
 form div {

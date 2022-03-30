@@ -1,6 +1,7 @@
 <h2> Update profile </h2>
 <form method="post" enctype="multipart/form-data" action="{% url 'spapp:update-profile' %}">
   {% csrf_token %}
+  <input type="hidden" name="major" value="{{ user.student.major.pk }}" />
   <input type="file" name="image" accept="image/*" id="id_image">
   <button type="submit" class="p-4 text-white rounded-lg bg-primary" value="Submit">Update</button>
 </form>

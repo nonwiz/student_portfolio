@@ -45,7 +45,7 @@ class Student(models.Model):
     interests = models.CharField(max_length=100, null=True)
     phone_number = models.CharField(max_length=12, null=True)
     image = models.ImageField(upload_to='theme/static/user_image', null=True)
-    website = models.CharField(max_length=12, null=True)
+    website = models.CharField(max_length=50, null=True)
 
     def __str__(self):
         return f"student: {self.user}, nationality: {self.nationality}, dob: {self.date_of_birth}, Interests: {self.interests}, bio_char: {self.bio_char}"
@@ -156,7 +156,7 @@ class Job(models.Model):
     website = models.CharField(max_length=50, null=True)
 
     def __str__(self):
-        return f"{self.title}"
+        return f"{self.title}, {self.location}"
 
 
 
