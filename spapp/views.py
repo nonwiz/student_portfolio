@@ -1,12 +1,13 @@
 from datetime import date
 from random import randint
-from django.db import IntegrityError
+
 from django import forms
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -46,7 +47,7 @@ class LoginPage(generic.TemplateView):
         the authentication checks if the user exists, and also if the password matches the password for that user. if its all correct
         then an object will be stored in user.
     """
-        if username.find("@") == -1:
+        if username.find("@") == -1 and len(username) == 9:
             student = Student.objects.get(id_number=username)
             user = authenticate(
                 req, username=student.user.username, password=password)
@@ -547,15 +548,15 @@ def edit_job(req, pk):
     cj = Job.objects.get(pk=pk)
     form = JobForm(initial={'title': cj.title, 'description': cj.description, 'location': cj.location,
                    'email': cj.email, 'phone_number': cj.phone_number, 'website': cj.website})
-    print(form.as_ul())
-    return JsonResponse({'form': form.as_ul()})
+    print(form.as_p())
+    return JsonResponse({'form': form.as_p()})
 
 
 def edit_major(req, pk):
     cm = Major.objects.get(pk=pk)
     form = MajorForm(initial={'name': cm.name, 'degree': cm.degree})
-    print(form.as_ul())
-    return JsonResponse({'form': form.as_ul()})
+    print(form.as_p())
+    return JsonResponse({'form': form.as_p()})
 
 
 def update_job(req):
@@ -591,8 +592,8 @@ def update_major(req):
 def edit_emphasis(req, pk):
     ce = Emphasis.objects.get(pk=pk)
     form = EmphasisForm(initial={'name': ce.name, 'major': ce.major})
-    print(form.as_ul())
-    return JsonResponse({'form': form.as_ul()})
+    print(form.as_p())
+    return JsonResponse({'form': form.as_p()})
 
 
 def update_emphasis(req):
@@ -614,8 +615,7 @@ def update_emphasis(req):
 def edit_degree(req, pk):
     cd = Degree.objects.get(pk=pk)
     form = DegreeForm(initial={'name': cd.name, 'faculty': cd.faculty})
-    print(form.as_ul())
-    return JsonResponse({'form': form.as_ul()})
+    return JsonResponse({'form': form.as_p()})
 
 
 def update_degree(req):
@@ -639,8 +639,8 @@ def edit_validator(req, pk):
     cv = Validator.objects.get(pk=pk)
     form = ValidatorForm(initial={
                          'name': cv.name, 'phone_number': cv.phone_number, 'email': cv.email, 'verified': cv.verified})
-    print(form.as_ul())
-    return JsonResponse({'form': form.as_ul()})
+    print(form.as_p())
+    return JsonResponse({'form': form.as_p()})
 
 
 def update_validator(req):

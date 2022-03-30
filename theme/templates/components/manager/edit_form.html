@@ -1,16 +1,20 @@
-<div class="fixed inset-0 flex justify-center p-20 bg-transparent" id="action">
+<div class="fixed inset-0 flex justify-center p-20 bg-blue-200/75" id="action">
   <div class="p-20 gap-2">
-    <div class="bg-secondary"> Editing </div>
-    <div class="p-20 bg-primary">
+    <div
+      class="p-10 rounded-lg mx-auto mt-10 overflow-hidden bg-white rounded-lg drop-shadow-md shadow-blue-500/50 sm:mt-20 w-96 px-6 py-8 md:px-8">
       <form method="post" action="{{ url }}">
         {% csrf_token %}
         {{ content }}
         <input type="hidden" name="pk" value="{{ pk }}" />
+        <div>
+          <button type="submit" class=" text-white bg-blue-600" value="Submit">Update</button>
+        </div>
+        <div>
+          <button type="button" class="text-gray-500 hover:text-white hover:bg-blue-400"
+            onClick="cancelAction()">Cancel</button>
+        </div>
 
-        <button type="submit" class="p-4 text-white rounded-lg bg-primary" value="Submit">Update</button>
       </form>
-
-      <button class="p-2 rounded-md bg-secondary text-gray-50" onClick="cancelAction()"> Cancel </button>
     </div>
   </div>
 </div>

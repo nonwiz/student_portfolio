@@ -4,10 +4,6 @@
 
 
 
-form {
-  @apply m-2 p-2;
-}
-
 textarea {
   @apply w-full;
 }
@@ -17,7 +13,11 @@ form div {
 }
 
 input[type=text] {
-  @apply rounded-md;
+  @apply block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-blue-500 focus:outline-none focus:ring;
+}
+
+form button {
+  @apply w-full px-4 py-2 tracking-wide text-white rounded ;
 }
 
 select {
@@ -28,6 +28,7 @@ input[type=submit] {
 }
 
 label {
-  @apply text-gray-500;
+  @apply block mb-2 text-sm font-medium text-gray-600;
 }
+
 
