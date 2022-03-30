@@ -41,7 +41,7 @@ class Student(models.Model):
     date_of_birth = models.DateField(null=True)
     nationality = models.CharField(max_length=30, null=True)
     major = models.ForeignKey(Major, on_delete=models.CASCADE, null=True)
-    bio_char = models.CharField(max_length=100, null=True)
+    bio_char = models.CharField(max_length=200, null=True)
     interests = models.CharField(max_length=100, null=True)
     phone_number = models.CharField(max_length=12, null=True)
     image = models.ImageField(

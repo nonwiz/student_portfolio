@@ -3,14 +3,14 @@
 
 {% block content %}
 
-<section class="py-8 px-16 md:px-32 xl:px-48  flex justify-between  gap-4 flex-col lg:flex-row ">
+<section class="py-8 px-16 md:px-32 xl:px-48  flex justify-between  gap-4 flex-col lg:flex-row">
     <div>
       <p class="text-xl md:text-2xl xl:text-3xl font-bold">Profile</p>
       <span class="text-lg">Account and Acitivity Details</span>
     </div>
   
     <div class="">
-      <button class="border-2 border-blue-700 hover:bg-blue-700 text-black  py-2 px-4 rounded">
+      <button class="mr-4 border-2 border-blue-700 hover:bg-blue-700 text-black  py-2 px-4 rounded">
     Edit Profile
   </button>
   
@@ -24,7 +24,7 @@
   
   
   
-  <section class="py-8 px-16 md:px-32 xl:px-48 bg-gray-100 flex justify-between  gap-4 flex-col lg:flex-row  max-h-screen">
+  <section class="py-8 px-16 md:px-32 xl:px-48 bg-gray-100 flex justify-between  gap-4 flex-col lg:flex-row min-h-screen">
     <div class="lg:w-1/3">
     <!-- Personal Details -->
           <div class="mt-4 mb-5 flex flex-col gap-1 bg-white p-6 w-full">
@@ -34,22 +34,28 @@
                   
         
                   <h2 class="font-medium text-2xl"> {{ user.first_name }} {{ user.last_name }} </h2>
-                  <p class="mt-2"> I'm just a little senior IT student trying to be creative. I'm pursuing a bachelor's degree in Information Technology at APIU with a focus in software development. </span></p>
+                  <p class="mt-2"> {{ user.student.bio_char }} </span></p>
   
-                <p class="font-medium mt-2">Interests: <span class="font-normal"> UI/UX Designing, Frontend Dev, Sports, etc </span></p>
+                <p class="font-medium mt-2">Interests: <span class="font-normal"> {{ user.student.interests }} </span></p>
   
   
                 <div class="mt-6 flex  flex-col gap-2">
-                      <a href="#" class="inline-flex items-center pr-4  text-primary rounded-md  text-lg ">
+                      <p class="inline-flex items-center pr-4  text-primary rounded-md  text-lg ">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-current mr-2" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M9.366 10.682a10.556 10.556 0 0 0 3.952 3.952l.884-1.238a1 1 0 0 1 1.294-.296 11.422 11.422 0 0 0 4.583 1.364 1 1 0 0 1 .921.997v4.462a1 1 0 0 1-.898.995c-.53.055-1.064.082-1.602.082C9.94 21 3 14.06 3 5.5c0-.538.027-1.072.082-1.602A1 1 0 0 1 4.077 3h4.462a1 1 0 0 1 .997.921A11.422 11.422 0 0 0 10.9 8.504a1 1 0 0 1-.296 1.294l-1.238.884zm-2.522-.657l1.9-1.357A13.41 13.41 0 0 1 7.647 5H5.01c-.006.166-.009.333-.009.5C5 12.956 11.044 19 18.5 19c.167 0 .334-.003.5-.01v-2.637a13.41 13.41 0 0 1-3.668-1.097l-1.357 1.9a12.442 12.442 0 0 1-1.588-.75l-.058-.033a12.556 12.556 0 0 1-4.702-4.702l-.033-.058a12.442 12.442 0 0 1-.75-1.588z"/></svg>
-                          +(66) 95-115-0137
-                      </a>
+                       {{ user.student.phone_number }}
+                </p>
       
                       <a href="#" class="inline-flex items-center pr-4  text-primary rounded-md  text-lg ">
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-current mr-2" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M3 3h18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm17 4.238l-7.928 7.1L4 7.216V19h16V7.238zM4.511 5l7.55 6.662L19.502 5H4.511z"/></svg>
-                          201900162@my.apiu.edu
+                          {{ user.email }}
                       </a>
-      
+
+                      {% if user.student.website %}
+                      <a href="{{user.student.website}}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center pr-4  text-primary rounded-md  text-lg ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="fill-current mr-2" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-2.29-2.333A17.9 17.9 0 0 1 8.027 13H4.062a8.008 8.008 0 0 0 5.648 6.667zM10.03 13c.151 2.439.848 4.73 1.97 6.752A15.905 15.905 0 0 0 13.97 13h-3.94zm9.908 0h-3.965a17.9 17.9 0 0 1-1.683 6.667A8.008 8.008 0 0 0 19.938 13zM4.062 11h3.965A17.9 17.9 0 0 1 9.71 4.333 8.008 8.008 0 0 0 4.062 11zm5.969 0h3.938A15.905 15.905 0 0 0 12 4.248 15.905 15.905 0 0 0 10.03 11zm4.259-6.667A17.9 17.9 0 0 1 15.973 11h3.965a8.008 8.008 0 0 0-5.648-6.667z"/></svg>
+                         {{user.student.website}}
+                    </a>
+                    {% endif %}
                      
                   </div>
             </div> 
@@ -61,8 +67,8 @@
     <!-- Professional Development -->
                   <div class="flex flex-col gap-8 mt-4 ">
                       <!-- experiences -->
-                      <details  class="px-6 py-4 transition-colors duration-200 transform bg-white rounded-lg shadow-xl ">
-                          <summary class=" text-2xl font-semibold text-primary inline-flex align-center"> 
+                      <details  class="px-6 py-4 transition-colors duration-200 transform bg-white rounded-lg hover:shadow-md ">
+                          <summary class="text-xl font-semibold text-primary inline-flex align-center align-center w-full"> 
                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-current mr-4" width="32" height="32"><path fill="none" d="M0 0h24v24H0z"/><path d="M7 5V2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4zM4 16v3h16v-3H4zm0-2h16V7H4v7zM9 3v2h6V3H9zm2 8h2v2h-2v-2z"/></svg>
                               Experiences
                           </summary>
@@ -71,7 +77,7 @@
                               <div class="mt-8 space-y-8">
                                   <div >
                                       <div class="flex items-center group">
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-secondary group-hover:text-tertinary" viewBox="0 0 20 20" fill="currentColor">
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-secondary group-hover:text-tertinary" viewBox="0 0 20 20" fill="currentColor">
                                               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                           </svg>
                                       <!--  <p class="mx-4 text-lightGrey">Web Admin 
@@ -110,8 +116,8 @@
                            </div>
                       </details>
                       <!-- achievements -->
-                      <details close class="px-6 py-4 transition-colors duration-200 transform bg-white rounded-lg shadow-xl ">
-                          <summary class=" text-2xl font-semibold text-primary inline-flex align-center align-center"> 
+                      <details close class="px-6 py-4 transition-colors duration-200 transform bg-white rounded-lg hover:shadow-md ">
+                          <summary class=" text-xl font-semibold text-primary inline-flex align-center align-center w-full"> 
                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-current mr-4" width="32" height="32"><path fill="none" d="M0 0h24v24H0z"/><path d="M17 15.245v6.872a.5.5 0 0 1-.757.429L12 20l-4.243 2.546a.5.5 0 0 1-.757-.43v-6.87a8 8 0 1 1 10 0zM12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12zm0-2a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg>
                               Achievements</summary>
                            <div>
@@ -119,7 +125,7 @@
                               <div class="mt-8 space-y-8">
                                   <div >
                                       <div class="flex items-center group">
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-secondary group-hover:text-tertinary" viewBox="0 0 20 20" fill="currentColor">
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-secondary group-hover:text-tertinary" viewBox="0 0 20 20" fill="currentColor">
                                               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                           </svg>
                                       <!--  <p class="mx-4 text-lightGrey">Web Admin 
@@ -158,8 +164,8 @@
                            </div>
                       </details>
                       <!-- awards -->
-                      <details close class="px-6 py-4 transition-colors duration-200 transform bg-white rounded-lg shadow-xl ">
-                          <summary class=" text-2xl font-semibold text-primary inline-flex text-center"> 
+                      <details close class="px-6 py-4 transition-colors duration-200 transform bg-white rounded-lg hover:shadow-md ">
+                          <summary class="text-xl font-semibold text-primary inline-flex align-center align-center w-full"> 
                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-current mr-4 align-center" width="32" height="32"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 7a8 8 0 1 1 0 16 8 8 0 0 1 0-16zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12zm0 1.5l1.323 2.68 2.957.43-2.14 2.085.505 2.946L12 17.25l-2.645 1.39.505-2.945-2.14-2.086 2.957-.43L12 10.5zM18 2v3l-1.363 1.138A9.935 9.935 0 0 0 13 5.049L13 2 18 2zm-7-.001v3.05a9.935 9.935 0 0 0-3.636 1.088L6 5V2l5-.001z"/></svg>
                                Awards</summary>
                            <div>
@@ -167,7 +173,7 @@
                               <div class="mt-8 space-y-8">
                                   <div >
                                       <div class="flex items-center group">
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-secondary group-hover:text-tertinary" viewBox="0 0 20 20" fill="currentColor">
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-secondary group-hover:text-tertinary" viewBox="0 0 20 20" fill="currentColor">
                                               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                           </svg>
                                       <!--  <p class="mx-4 text-lightGrey">Web Admin 

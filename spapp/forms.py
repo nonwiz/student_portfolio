@@ -18,6 +18,7 @@ class StudentForm(forms.ModelForm):
     image = forms.ImageField(required=False)
     interests = forms.CharField(required=False)
     website = forms.CharField(required=False)
+    id_number = forms.CharField(required=False)
     bio_char = forms.CharField(required=False, widget=forms.Textarea)
 
     nationality = forms.CharField(required=False, widget=forms.TextInput(
@@ -31,7 +32,7 @@ class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = ('interests',  'nationality', 'image',
-                  'bio_char', 'website', 'major')
+                  'bio_char', 'website', 'major', "id_number")
 
 # Activity Form
 

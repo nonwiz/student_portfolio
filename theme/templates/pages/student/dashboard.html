@@ -6,12 +6,12 @@
   <!-- body -->
   <section class="py-8 px-16 md:px-32 xl:px-48  flex justify-between  gap-4 flex-col lg:flex-row ">
     <div>
-      <p class="text-xl md:text-2xl xl:text-3xl font-bold">Howdy, Dan</p>
-      <span class="text-lg">Welcome back, what would you like to do today</span>
+      <p class="text-xl md:text-2xl xl:text-3xl font-bold">Howdy, {{ user.first_name }} {{ user.last_name }}</p>
+      <span class="text-lg">Welcome back, what would you like to do today?</span>
     </div>
   
     <div>
-      <button class="border-2 border-blue-700 hover:bg-blue-700 text-black  py-2 px-4 rounded">
+      <button class="mr-4 border-2 border-blue-700 hover:bg-blue-700 text-black  py-2 px-4 rounded">
     Add Activity
   </button>
   
