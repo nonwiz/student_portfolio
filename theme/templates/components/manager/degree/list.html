@@ -1,17 +1,45 @@
 <details open>
   <summary> List of {{ title }} </summary>
-  <div class="p-4">
-    {% for item in data %}
-    <li>{{ item.name }} | {{ item.faculty }}
-      <div id="deg-{{ item.pk }}">
-        <button onClick=edit_degree("{{ item.pk }}")> Edit </button> |
-        <button onClick=delete_degree("{{ item.pk}}")>Delete Item</button>
+  <div class="flex flex-col">
+    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+        <div class="overflow-hidden">
+          <table class="w-auto">
+            <thead class="border-b">
+              <tr>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  Degree
+                </th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  Faculty
+                </th>
+                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {% for item in data %}
+              <tr class="border-b">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ item.name }}</td>
+                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                  {{ item.faculty }}
+                </td>
+                <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap" id="deg-{{ item.pk }}">
+                  <button onClick=edit_degree("{{ item.pk }}")> Edit </button> |
+                  <button onClick=delete_degree("{{ item.pk}}")>Delete Item</button>
+                </td>
+              </tr>
+              {% endfor %}
+
+            </tbody>
+          </table>
+        </div>
       </div>
-
-    </li>
-
-    {% endfor %}
+    </div>
   </div>
+
 </details>
 
 

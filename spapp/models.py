@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.fields import related
+# from django.db.models.fields import related
 from django.urls import reverse
 
 
@@ -37,14 +37,15 @@ class Emphasis(models.Model):
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    id_number = models.CharField(max_length=10)
+    id_number = models.CharField(max_length=10, unique=True, null=True)
     date_of_birth = models.DateField(null=True)
     nationality = models.CharField(max_length=30, null=True)
     major = models.ForeignKey(Major, on_delete=models.CASCADE, null=True)
     bio_char = models.CharField(max_length=100, null=True)
     interests = models.CharField(max_length=100, null=True)
     phone_number = models.CharField(max_length=12, null=True)
-    image = models.ImageField(upload_to='theme/static/user_image', null=True)
+    image = models.ImageField(
+        upload_to='theme/static/user_image', null=True, default="theme/static/user_image/default-image.png")
     website = models.CharField(max_length=50, null=True)
 
     def __str__(self):
@@ -103,7 +104,6 @@ class CommunityService(models.Model):
         return f"{self.activity.student} - {self.activity.description} at {self.location}"
 
 
-
 class Project(models.Model):
     activity = models.OneToOneField(
         Activity, on_delete=models.CASCADE, related_name="project")
@@ -112,8 +112,6 @@ class Project(models.Model):
 
     def __str__(self):
         return f"{self.activity.student} - {self.activity.description}"
-
-
 
 
 class Research(models.Model):
@@ -125,6 +123,7 @@ class Research(models.Model):
 
     def __str__(self):
         return f"{self.activity.student} - {self.activity.description}"
+
 
 class Internship(models.Model):
     activity = models.OneToOneField(
@@ -142,10 +141,6 @@ class PreviousJob(models.Model):
         return f"{self.activity.student} - {self.activity.description}"
 
 
-
-
-
-
 class Job(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=50)
@@ -157,7 +152,6 @@ class Job(models.Model):
 
     def __str__(self):
         return f"{self.title}, {self.location}"
-
 
 
 class AccountRemovalRequest(models.Model):

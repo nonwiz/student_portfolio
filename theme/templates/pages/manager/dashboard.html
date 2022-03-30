@@ -61,7 +61,7 @@
 
   <div class="w-auto lg:w-1/3 p-4">
 {% include 'components/manager/job/list.html' with title="jobs" data=jobs %}
-            <button class="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded" onClick="handleUpdate()">
+            <button class="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded" onClick="handleAddJob()">
               Add Job
             </button>
  
@@ -81,7 +81,7 @@
 <script>
   const add_job = document.querySelector("#add_job")
 
-  const handleUpdate = (e) => {
+  const handleAddJob = (e) => {
       add_job.open = true;
     }
 

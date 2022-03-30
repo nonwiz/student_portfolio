@@ -1,9 +1,41 @@
 {% extends 'components/manager/layout.html' %}
 
 {% block content %}
+  <section class="py-8 px-4 md:px-8 xl:px-48  flex justify-between  gap-4 flex-col lg:flex-row ">
+    <div>
+      <p class="text-xl md:text-2xl xl:text-3xl font-bold">Settings</p>
+      <span class="text-lg">View list of degree, major, emphasis, validator</span>
+    </div>
+  
+  </section>
+<section class="py-8 px-4 md:px-8 xl:px-48 bg-gray-100 flex justify-between  gap-4 flex-col lg:flex-row ">
+
+  <div class="w-full lg:w-2/3 ">
+  {% include 'components/manager/degree/list.html' with title="Degrees" data=degrees %}
+  {% include 'components/manager/degree/list.html' with title="Degrees" data=degrees %}
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  </div>
+
+
+  <div class="w-auto lg:w-1/3 p-4">
+{% include 'components/manager/job/list.html' with title="jobs" data=jobs %}
+            <button class="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded" onClick="handleCreateDegree()">
+              Add Job
+            </button>
+ 
+  </div>
+
+</section>
+ 
 <h1> Admin Settings </h1>
 
-{% include 'components/manager/degree/list.html' with title="Degrees" data=degrees %}
 {% include 'components/manager/create_form.html' with form=form_degree title="Create Degree" url="/manager/create/degree" %}
 
 {% include 'components/manager/major/list.html' with title="Majors" data=majors %}

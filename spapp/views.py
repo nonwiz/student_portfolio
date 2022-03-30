@@ -1,6 +1,6 @@
 from datetime import date
 from random import randint
-
+from django.db import IntegrityError
 from django import forms
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
@@ -24,8 +24,9 @@ def logout_user(req):
     logout(req)
     return redirect('spapp:login')
 
-
 # Student Pages
+
+
 class LoginPage(generic.TemplateView):
     template_name = "pages/auth/login.html"
     dashboard_template = "pages/student/dashboard.html"
@@ -45,7 +46,12 @@ class LoginPage(generic.TemplateView):
         the authentication checks if the user exists, and also if the password matches the password for that user. if its all correct
         then an object will be stored in user.
     """
-        user = authenticate(req, username=username, password=password)
+        if username.find("@") == -1:
+            student = Student.objects.get(id_number=username)
+            user = authenticate(
+                req, username=student.user.username, password=password)
+        else:
+            user = authenticate(req, username=username, password=password)
         if user is not None:
             """ (on line 27 we assigned an object to the variable user, and if its not empty we login and redirect them tot he dashboard) """
             # Below here is to tell the user about their username
@@ -56,6 +62,8 @@ class LoginPage(generic.TemplateView):
         else:
             # print("User is not found in database")
             """ if login failed we redirect them back to the login page """
+            messages.add_message(req, messages.WARNING,
+                                 "Incorrect credentials")
             return render(req, self.template_name)
 
 
@@ -98,11 +106,12 @@ def create_ar(req):
         print('Current logged in user is not a student!')
     return redirect('spapp:dashboard')
 
+
 def create_cs(req):
     try:
         data = req.POST.dict()
         activity = Activity.objects.create(
-            student=req.user.student, activity_name="Community Service", description=data["description"], from_date=date.fromisoformat(data['from_date']), to_date=date.fromisoformat(data['to_date']), validator=Validator.objects.get(pk=data["validator"])  )
+            student=req.user.student, activity_name="Community Service", description=data["description"], from_date=date.fromisoformat(data['from_date']), to_date=date.fromisoformat(data['to_date']), validator=Validator.objects.get(pk=data["validator"]))
         CommunityService.objects.create(
             activity=activity, location=data["location"]
         )
@@ -110,11 +119,12 @@ def create_cs(req):
         print('Current logged in user is not a student!')
     return redirect('spapp:dashboard')
 
+
 def create_project(req):
     try:
         data = req.POST.dict()
         activity = Activity.objects.create(
-            student=req.user.student, activity_name="Project", description=data["description"], from_date=date.fromisoformat(data['from_date']), to_date=date.fromisoformat(data['to_date']), validator=Validator.objects.get(pk=data["validator"])  )
+            student=req.user.student, activity_name="Project", description=data["description"], from_date=date.fromisoformat(data['from_date']), to_date=date.fromisoformat(data['to_date']), validator=Validator.objects.get(pk=data["validator"]))
         Project.objects.create(
             activity=activity, location=data["location"], responsibility=data["responsibility"]
         )
@@ -127,9 +137,10 @@ def create_research(req):
     try:
         data = req.POST.dict()
         activity = Activity.objects.create(
-            student=req.user.student, activity_name="Research", description=data["description"], from_date=date.fromisoformat(data['from_date']), to_date=date.fromisoformat(data['to_date']), validator=Validator.objects.get(pk=data["validator"])  )
+            student=req.user.student, activity_name="Research", description=data["description"], from_date=date.fromisoformat(data['from_date']), to_date=date.fromisoformat(data['to_date']), validator=Validator.objects.get(pk=data["validator"]))
         Research.objects.create(
-            activity=activity, co_authors=data["co_authors"], link=data["link"], published_date=date.fromisoformat(data["published_date"])
+            activity=activity, co_authors=data["co_authors"], link=data["link"], published_date=date.fromisoformat(
+                data["published_date"])
         )
     except:
         print('Current logged in user is not a student!')
@@ -140,7 +151,7 @@ def create_internship(req):
     try:
         data = req.POST.dict()
         activity = Activity.objects.create(
-            student=req.user.student, activity_name="Internship", description=data["description"], from_date=date.fromisoformat(data['from_date']), to_date=date.fromisoformat(data['to_date']), validator=Validator.objects.get(pk=data["validator"])  )
+            student=req.user.student, activity_name="Internship", description=data["description"], from_date=date.fromisoformat(data['from_date']), to_date=date.fromisoformat(data['to_date']), validator=Validator.objects.get(pk=data["validator"]))
         Internship.objects.create(
             activity=activity
         )
@@ -154,14 +165,13 @@ def create_pj(req):
     try:
         data = req.POST.dict()
         activity = Activity.objects.create(
-            student=req.user.student, activity_name="Previous Job", description=data["description"], from_date=date.fromisoformat(data['from_date']), to_date=date.fromisoformat(data['to_date']), validator=Validator.objects.get(pk=data["validator"])  )
+            student=req.user.student, activity_name="Previous Job", description=data["description"], from_date=date.fromisoformat(data['from_date']), to_date=date.fromisoformat(data['to_date']), validator=Validator.objects.get(pk=data["validator"]))
         PreviousJob.objects.create(
             activity=activity
         )
     except:
         print('Current logged in user is not a student!')
     return redirect('spapp:dashboard')
-
 
 
 # def update_ar(req, pk):
@@ -203,7 +213,7 @@ class RegisterPage(generic.TemplateView):
         arr_full_name = full_name.split(" ")
         # retreive first and last name from the full name
         first_name, last_name = arr_full_name[0], arr_full_name[-1]
-        username = str(id_number)
+        username = data["email"]
 
         """ check if the password are the same, if they are not, then return 'wrong password' else continue saving the user """
         if data['password'] != data['password1']:
@@ -216,7 +226,14 @@ class RegisterPage(generic.TemplateView):
         user.first_name, user.last_name = first_name, last_name
         user.save()
         """ using the registered user add thier information in the student table """
-        student = Student(user=user, id_number=username)
+        id_occurrences = Student.objects.filter(
+            id_number=id_number).count()
+        if id_occurrences > 0:
+            messages.add_message(req, messages.SUCCESS,
+                                 "Id number is already used, please update your id number again.")
+            student = Student(user=user)
+        else:
+            student = Student(user=user, id_number=id_number)
         student.save()
         """redirect the user to the dashboard after they signup (log them in) """
         user = authenticate(req, username=username, password=data['password'])
@@ -254,7 +271,8 @@ class SettingsPage(LoginRequiredMixin, generic.TemplateView):
             # If Found student account is not found within the Request, return True.
             context['student'] = get_object_or_404(
                 Student, user=self.request.user)
-            context['update_student'] = self.form_update_student(instance=context["student"])
+            context['update_student'] = self.form_update_student(
+                instance=context["student"])
             context['account_status'] = not bool(
                 len(AccountRemovalRequest.objects.filter(student=self.request.user.student)))
             return context
@@ -271,17 +289,18 @@ class SettingsPage(LoginRequiredMixin, generic.TemplateView):
             if update_student.is_valid():
                 student = Student.objects.get(user=req.user)
                 form = self.form_update_student(
-                        data, instance=student)
+                    data, instance=student)
                 form.save()
                 print("Saving", data, form, form.errors)
             else:
                 print("Errors", update_student.errors, req)
                 messages.add_message(req, messages.INFO,
-                                 update_student.errors.as_text)
+                                     update_student.errors.as_text)
         except:
             messages.add_message(req, messages.WARNING,
                                  "Unable to update the current student data.")
         return redirect("spapp:settings")
+
 
 def update_profile(req):
     try:
@@ -290,17 +309,17 @@ def update_profile(req):
         if update_student.is_valid():
             student = Student.objects.get(user=req.user)
             form = StudentForm(
-                    data, req.FILES, instance=student)
+                data, req.FILES, instance=student)
             form.save()
             print("Saving", data, form, form.errors)
         else:
             print("Errors", update_student.errors, req)
             messages.add_message(req, messages.INFO,
-                             update_student.errors.as_text)
+                                 update_student.errors.as_text)
     except:
         messages.add_message(req, messages.WARNING,
                              "Unable to update the current student data.")
- 
+
     return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
 
 
@@ -337,9 +356,9 @@ class AdminDashboard(LoginRequiredMixin, generic.TemplateView):
         context = super().get_context_data(**kwargs)
         try:
             context = {
-            'activities': Activity.objects.all(),
-               'form_job': self.form_job(),
-               'jobs': Job.objects.all(),
+                'activities': Activity.objects.all(),
+                'form_job': self.form_job(),
+                'jobs': Job.objects.all(),
             }
             return context
         except:
@@ -355,7 +374,6 @@ class AdminDashboard(LoginRequiredMixin, generic.TemplateView):
             messages.add_message(req, messages.WARNING,
                                  "Unable to update the current student data.")
         return redirect("spapp:manager_settings")
-
 
 
 @method_decorator(decorators, name='dispatch')
@@ -426,6 +444,7 @@ def create_emphasis(req):
     create_records(req, EmphasisForm)
     return redirect("spapp:manager_settings")
 
+
 def create_job(req):
     print("Creating job")
     data = req.POST.dict()
@@ -440,10 +459,10 @@ def create_job(req):
         else:
             print(model.errors)
         messages.add_message(req, messages.SUCCESS,
-                         f"You have created {model} successfully")
+                             f"You have created {model} successfully")
     except:
         messages.add_message(req, messages.WARNING,
-                         "Unable to create data.")
+                             "Unable to create data.")
     return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
 
 
@@ -472,11 +491,12 @@ def create_validator(req):
         else:
             print(model.errors)
         messages.add_message(req, messages.SUCCESS,
-                         f"You have created {model} successfully")
+                             f"You have created {model} successfully")
     except:
         messages.add_message(req, messages.WARNING,
-                         "Unable to create data.")
+                             "Unable to create data.")
     return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
+
 
 def delete_job(req, pk):
     try:
@@ -504,6 +524,7 @@ def delete_major(req, pk):
         print("Deleting failed")
     return redirect("spapp:manager_settings")
 
+
 def delete_emphasis(req, pk):
     try:
         emp = Emphasis.objects.get(pk=pk)
@@ -521,9 +542,11 @@ def delete_validator(req, pk):
         print("Deleting failed")
     return redirect("spapp:manager_settings")
 
+
 def edit_job(req, pk):
     cj = Job.objects.get(pk=pk)
-    form = JobForm(initial={'title': cj.title, 'description': cj.description, 'location': cj.location, 'email': cj.email, 'phone_number': cj.phone_number, 'website': cj.website})
+    form = JobForm(initial={'title': cj.title, 'description': cj.description, 'location': cj.location,
+                   'email': cj.email, 'phone_number': cj.phone_number, 'website': cj.website})
     print(form.as_ul())
     return JsonResponse({'form': form.as_ul()})
 
@@ -534,6 +557,7 @@ def edit_major(req, pk):
     print(form.as_ul())
     return JsonResponse({'form': form.as_ul()})
 
+
 def update_job(req):
     data = req.POST.dict()
     try:
@@ -541,10 +565,11 @@ def update_job(req):
         if job.is_valid():
             maj = Job.objects.get(pk=data["pk"])
             updated_maj = JobForm(job.cleaned_data, instance=maj).save()
-        messages.add_message(req, messages.SUCCESS, "You have successfully updated!")
+        messages.add_message(req, messages.SUCCESS,
+                             "You have successfully updated!")
     except:
         messages.add_message(req, messages.WARNING,
-                            "Unable to update the current job.")
+                             "Unable to update the current job.")
     return redirect("spapp:manager_dashboard")
 
 
@@ -555,10 +580,11 @@ def update_major(req):
         if major.is_valid():
             maj = Major.objects.get(pk=data["pk"])
             updated_maj = MajorForm(major.cleaned_data, instance=maj).save()
-        messages.add_message(req, messages.SUCCESS, "You have successfully updated!")
+        messages.add_message(req, messages.SUCCESS,
+                             "You have successfully updated!")
     except:
         messages.add_message(req, messages.WARNING,
-                            "Unable to update the current major.")
+                             "Unable to update the current major.")
     return redirect("spapp:manager_settings")
 
 
@@ -568,17 +594,20 @@ def edit_emphasis(req, pk):
     print(form.as_ul())
     return JsonResponse({'form': form.as_ul()})
 
+
 def update_emphasis(req):
     data = req.POST.dict()
     try:
         emphasis = EmphasisForm(data)
         if emphasis.is_valid():
             emp = Emphasis.objects.get(pk=data["pk"])
-            updated_emp = EmphasisForm(emphasis.cleaned_data, instance=emp).save()
-        messages.add_message(req, messages.SUCCESS, "You have successfully updated!")
+            updated_emp = EmphasisForm(
+                emphasis.cleaned_data, instance=emp).save()
+        messages.add_message(req, messages.SUCCESS,
+                             "You have successfully updated!")
     except:
         messages.add_message(req, messages.WARNING,
-                            "Unable to update the current degree.")
+                             "Unable to update the current degree.")
     return redirect("spapp:manager_settings")
 
 
@@ -588,6 +617,7 @@ def edit_degree(req, pk):
     print(form.as_ul())
     return JsonResponse({'form': form.as_ul()})
 
+
 def update_degree(req):
     data = req.POST.dict()
     try:
@@ -595,19 +625,23 @@ def update_degree(req):
         if degree.is_valid():
             deg = Degree.objects.get(pk=data["pk"])
             updated_deg = DegreeForm(degree.cleaned_data, instance=deg).save()
-            print(deg, "Degree", degree.is_valid(), "Data", data, degree.errors.as_text)
-        messages.add_message(req, messages.SUCCESS, "You have successfully updated!")
+            print(deg, "Degree", degree.is_valid(),
+                  "Data", data, degree.errors.as_text)
+        messages.add_message(req, messages.SUCCESS,
+                             "You have successfully updated!")
     except:
         messages.add_message(req, messages.WARNING,
-                            "Unable to update the current degree.")
+                             "Unable to update the current degree.")
     return redirect("spapp:manager_settings")
 
- 
+
 def edit_validator(req, pk):
     cv = Validator.objects.get(pk=pk)
-    form = ValidatorForm(initial={'name': cv.name, 'phone_number': cv.phone_number, 'email': cv.email, 'verified': cv.verified })
+    form = ValidatorForm(initial={
+                         'name': cv.name, 'phone_number': cv.phone_number, 'email': cv.email, 'verified': cv.verified})
     print(form.as_ul())
     return JsonResponse({'form': form.as_ul()})
+
 
 def update_validator(req):
     data = req.POST.dict()
@@ -615,15 +649,16 @@ def update_validator(req):
         validator = ValidatorForm(data)
         if validator.is_valid():
             val = Validator.objects.get(pk=data["pk"])
-            updated_val = ValidatorForm(validator.cleaned_data, instance=val).save()
-            print(val, "validator", validator.is_valid(), "Data", data, validator.errors.as_text)
-        messages.add_message(req, messages.SUCCESS, "You have successfully updated!")
+            updated_val = ValidatorForm(
+                validator.cleaned_data, instance=val).save()
+            print(val, "validator", validator.is_valid(),
+                  "Data", data, validator.errors.as_text)
+        messages.add_message(req, messages.SUCCESS,
+                             "You have successfully updated!")
     except:
         messages.add_message(req, messages.WARNING,
-                            "Unable to update the current degree.")
+                             "Unable to update the current degree.")
     return redirect("spapp:manager_settings")
 
-
-    
 
 #  AR -> Activity -> Student

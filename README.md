@@ -9,7 +9,7 @@ Web Application that allows students to build thier resume with the guidance of 
 - [ ] Admin can access user page but cannot do those operation. E.g. Dashboard Page.
 
 
-## Models
+# Models
 - E.g: 
     Bachelor of Arts Program in English, TESOL, Communication, Business Emphasis
 - Degree: bachelor of Arts 

@@ -1,15 +1,18 @@
 {% with home="/" profile="/profile" settings="/settings" rp=request.get_full_path %}
 <div class="px-16 md:px-32 xl:px-48 bg-blue-600 py-2 flex justify-between w-full text-green-100">
   <div class="flex gap-4">
-    <a class="p-2">{{ user }}</a>
     <a class='p-2 {% if rp == home %} bg-blue-500 rounded-lg  {% endif %}' href="{{ home }}"> Home </a>
     <a class='p-2 {% if rp == profile %} bg-blue-500 rounded-lg  {% endif %}' href="{{ profile }}"> Profile </a>
     <a class='p-2 {% if rp == settings %} bg-blue-500 rounded-lg  {% endif %}' href="{{ settings }}"> Settings </a>
 
   </div>
 
-  <a href="{% url 'spapp:logout' %}" class="p-2 rounded-lg hover:bg-red "> Sign out </a>
-  {{ name }}
+  <div class="flex gap-2">
+    <a class="p-2">{{ user.first_name }}</a>
+    <a href="{% url 'spapp:logout' %}" class="p-2 rounded-lg hover:bg-red "> Sign out </a>
+    {{ name }}
+  </div>
+  
 
 </div>
 {% endwith %}

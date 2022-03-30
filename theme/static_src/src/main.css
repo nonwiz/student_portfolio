@@ -31,18 +31,3 @@ label {
   @apply text-gray-500;
 }
 
-table {
-  @apply min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700;
-}
-
-table {
-  @apply bg-gray-100 dark:bg-gray-700;
-}
-
-th {
-  @apply p-4;
-}
-
-td {
-  @apply py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap;
-}

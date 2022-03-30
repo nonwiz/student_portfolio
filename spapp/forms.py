@@ -1,5 +1,4 @@
 from django import forms
-
 from .models import (AcademicRecognition, Activity, CommunityService, Degree,
                      Emphasis, Internship, Job, Major, PreviousJob, Project,
                      Research, Student, Validator)
@@ -31,27 +30,34 @@ class StudentForm(forms.ModelForm):
 
     class Meta:
         model = Student
-        fields = ('interests',  'nationality', 'image', 'bio_char', 'website', 'major')
+        fields = ('interests',  'nationality', 'image',
+                  'bio_char', 'website', 'major')
 
 # Activity Form
+
+
 class ActivityForm(forms.ModelForm):
     from_date = forms.DateField(widget=forms.DateInput(
         attrs={
-             'type': 'date',
-            }
-    )) 
+            'type': 'date',
+        }
+    ))
 
     to_date = forms.DateField(widget=forms.DateInput(
         attrs={
-             'type': 'date',
-            }
+            'type': 'date',
+        }
     ))
+
     class Meta:
         model = Activity
         fields = '__all__'
-        exclude = ('verification_status', 'rewarded_points', 'activity_name', 'student', )
-  
+        exclude = ('verification_status', 'rewarded_points',
+                   'activity_name', 'student', )
+
 # Project Form
+
+
 class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
@@ -59,13 +65,14 @@ class ProjectForm(forms.ModelForm):
         exclude = ('activity',)
 
 # Research Form
+
+
 class ResearchForm(forms.ModelForm):
     published_date = forms.DateField(widget=forms.DateInput(
         attrs={
-             'type': 'date',
-            }
-    )) 
-
+            'type': 'date',
+        }
+    ))
 
     class Meta:
         model = Research
@@ -81,6 +88,8 @@ class InternshipForm(forms.ModelForm):
         exclude = ('activity',)
 
 # PreviousJob Form
+
+
 class PJForm(forms.ModelForm):
     class Meta:
         model = PreviousJob
@@ -128,15 +137,15 @@ class ValidatorForm(forms.ModelForm):
         fields = "__all__"
         exclude = ["created_by", "verified"]
 
+
 class JobForm(forms.ModelForm):
     title = forms.CharField(widget=forms.TextInput(
         attrs={
             'class': 'p-2'
-            }
-        ))
+        }
+    ))
     website = forms.CharField(required=False)
     phone_number = forms.CharField(required=False)
-
 
     class Meta:
         model = Job

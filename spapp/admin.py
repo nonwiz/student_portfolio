@@ -1,20 +1,17 @@
 from django.contrib import admin
+from spapp import models
 
-from .models import *
-
-# Register your models here.
-
-admin.site.register(Degree)
-admin.site.register(Major)
-admin.site.register(Emphasis)
-admin.site.register(Validator)
-admin.site.register(Activity)
-admin.site.register(AcademicRecognition)
-admin.site.register(CommunityService)
-admin.site.register(Internship)
-admin.site.register(PreviousJob)
-admin.site.register(Job)
-admin.site.register(Research)
-admin.site.register(Project)
-admin.site.register(Student)
-admin.site.register(AccountRemovalRequest)
+admin.site.register(models.Degree)
+admin.site.register(models.Major)
+admin.site.register(models.Emphasis)
+admin.site.register(models.Validator)
+admin.site.register(models.Activity)
+admin.site.register(models.AcademicRecognition)
+admin.site.register(models.CommunityService)
+admin.site.register(models.Internship)
+admin.site.register(models.PreviousJob)
+admin.site.register(models.Job)
+admin.site.register(models.Research)
+admin.site.register(models.Project)
+admin.site.register(models.Student)
+admin.site.register(models.AccountRemovalRequest)
