@@ -1,4 +1,5 @@
 from django import forms
+
 from .models import (AcademicRecognition, Activity, CommunityService, Degree,
                      Emphasis, Internship, Job, Major, PreviousJob, Project,
                      Research, Student, Validator)
@@ -146,6 +147,7 @@ class JobForm(forms.ModelForm):
         }
     ))
     website = forms.CharField(required=False)
+    email = forms.CharField(required=False)
     phone_number = forms.CharField(required=False)
 
     class Meta:

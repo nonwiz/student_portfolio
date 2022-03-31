@@ -25,12 +25,13 @@
   <!-- body -->
   <section class="py-8 px-16 md:px-32 xl:px-48 bg-gray-100 flex justify-between  gap-4 flex-col lg:flex-row ">
     <div class="md:w-2/3">
-      <span class="font-bold">Incomming Job Opportunities</span>
+      <span class="font-bold">Incoming Job Opportunities</span>
   
       <div class="flex flex-col gap-4 mt-4 ">
         <!-- job cards -->
+        {% for job in jobs %}
         <div class="bg-white p-6 w-full flex  flex-col lg:gap-0 hover:drop-shadow-md"> 
-          <p class="mt-2 text-2xl font-bold">UI/UX Designer</p>
+          <p class="mt-2 text-2xl font-bold">{{ job.title }}</p>
           <div class="flex flew-row justify-between flex-wrap items-end gap-4">
               <div class="flex flex-row gap-8 mt-4 flex-wrap ">
                   <div>
@@ -56,6 +57,7 @@
   
           </div>
         </div>
+        {% endfor %}
 
         <div class="bg-white p-6 w-full flex  flex-col lg:gap-0 hover:drop-shadow-md"> 
           <p class="mt-2 text-2xl font-bold">UI/UX Designer</p>

@@ -71,14 +71,8 @@
  
 
 
-<dialog class="open:fixed open:inset-0 open:flex open:justify-center open:p-20 bg-transparent "  id="add_job">
-   <div class="bg-gray-100 w-[800px] rounded-md">
-    <button onClick="closeDialog()" class="text-rose-800 float-right p-4 hover:text-rose-300"> X </button>
-{% include 'components/manager/create_form.html' with form=form_job title="Add Job" url="/manager/create/job" %}
-   </div>
-</dialog>
-
-<script>
+{% include 'components/manager/create_form.html' with form=form_job title="Add Job" url="/manager/create/job" id_form="add_job" %}
+  <script>
   const add_job = document.querySelector("#add_job")
 
   const handleAddJob = (e) => {

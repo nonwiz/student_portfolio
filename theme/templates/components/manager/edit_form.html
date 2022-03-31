@@ -1,19 +1,17 @@
-<div class="fixed inset-0 flex justify-center p-20 bg-blue-200/75" id="action">
-  <div class="p-20 gap-2">
+<div class="fixed inset-0 flex justify-center bg-blue-200/75" id="action">
+  <div class="grid place-items-center h-screen">
     <div
-      class="p-10 rounded-lg mx-auto mt-10 overflow-hidden bg-white rounded-lg drop-shadow-md shadow-blue-500/50 sm:mt-20 w-96 px-6 py-8 md:px-8">
+      class="rounded-lg mx-auto overflow-hidden bg-white rounded-lg drop-shadow-md shadow-blue-500/50 w-full px-6 py-8 md:px-8">
       <form method="post" action="{{ url }}">
         {% csrf_token %}
         {{ content }}
         <input type="hidden" name="pk" value="{{ pk }}" />
-        <div>
+        <div class="col-span-2 flex flex-col md:flex-row gap-2">
           <button type="submit" class=" text-white bg-blue-600" value="Submit">Update</button>
-        </div>
-        <div>
           <button type="button" class="text-gray-500 hover:text-white hover:bg-blue-400"
             onClick="cancelAction()">Cancel</button>
-        </div>
 
+        </div>
       </form>
     </div>
   </div>

@@ -546,8 +546,7 @@ def delete_validator(req, pk):
 
 def edit_job(req, pk):
     cj = Job.objects.get(pk=pk)
-    form = JobForm(initial={'title': cj.title, 'description': cj.description, 'location': cj.location,
-                   'email': cj.email, 'phone_number': cj.phone_number, 'website': cj.website})
+    form = JobForm(initial={'title': cj.title, 'description': cj.description, 'location': cj.location, 'type': cj.type, 'company_name': cj.company_name, 'email': cj.email, 'phone_number': cj.phone_number, 'website': cj.website})
     print(form.as_p())
     return JsonResponse({'form': form.as_p()})
 

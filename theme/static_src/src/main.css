@@ -12,7 +12,20 @@ form div {
   @apply flex my-2 flex-col;
 }
 
+form {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+
+}
+
+form p {
+  @apply w-full;
+}
+
 input[type=text] {
+  @apply block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-blue-500 focus:outline-none focus:ring;
+}
+
+input[type=email] {
   @apply block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-blue-500 focus:outline-none focus:ring;
 }
 

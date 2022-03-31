@@ -148,7 +148,10 @@ class Job(models.Model):
     location = models.CharField(max_length=50, null=True)
     email = models.EmailField(null=True)
     phone_number = models.CharField(max_length=20, null=True)
-    website = models.CharField(max_length=50, null=True)
+    website = models.CharField(max_length=90, null=True)
+    posted = models.DateField(auto_now_add=True)
+    type = models.CharField(default="Full Time", max_length=50)
+    company_name = models.CharField(default="", max_length=50)
 
     def __str__(self):
         return f"{self.title}, {self.location}"
