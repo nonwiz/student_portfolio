@@ -340,19 +340,22 @@ class SettingsPage(LoginRequiredMixin, generic.TemplateView):
 def update_profile(req):
     data = req.POST.dict()
     print("update_profile triggered", data, req.FILES)
-    update_student = StudentForm(data, req.FILES)
+    student = Student.objects.get(user=req.user)
+    update_student = StudentForm(data, req.FILES, instance=student)
     if update_student.is_valid():
-        student = Student.objects.get(user=req.user)
         form = StudentForm(
             data, req.FILES, instance=student)
         form.save()
         print("Saving", data, form, form.errors)
+        messages.add_message(req, messages.SUCCESS,
+                             "You have updated profile successfully.")
+   
     else:
         print("Errors", update_student.errors, req)
         messages.add_message(req, messages.INFO,
                              update_student.errors.as_text)
-    messages.add_message(req, messages.WARNING,
-                         "Unable to update the current student data.")
+    # messages.add_message(req, messages.WARNING,
+    #                      "Unable to update the current student data.")
 
     return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
 

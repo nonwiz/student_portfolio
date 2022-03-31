@@ -17,15 +17,15 @@ class StudentForm(forms.ModelForm):
     #         }
     #     ))
     image = forms.ImageField(required=False, label=("Profile:"), widget=forms.FileInput)
-    interests = forms.CharField(required=False)
-    website = forms.CharField(required=False)
-    id_number = forms.CharField(required=False)
-    bio_char = forms.CharField(required=False, widget=forms.Textarea)
-
+    website = forms.CharField(required=False, widget=forms.TextInput(attrs={"placeholder": "https://mywebpage.com"}))
+    id_number = forms.CharField(required=False, widget=forms.TextInput(attrs={"class": "", "placeholder": "ID: 202200157"}))
+    interests = forms.CharField(required=False, widget=forms.Textarea(attrs={"placeholder": "Interests"}))
+    bio_char = forms.CharField(required=False, widget=forms.Textarea(attrs={"placeholder": "Bio..."}))
+    phone_number = forms.CharField(required=False, widget=forms.TextInput(attrs={"placeholder": "+6662832421"}))
     nationality = forms.CharField(required=False, widget=forms.TextInput(
         attrs={
             'type': 'text',
-            'placeholder': 'Khmer',
+                                          'placeholder': "Nationality: Khmer",
             'class': ""
         }
     ))
@@ -33,7 +33,7 @@ class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = ('interests',  'nationality', 'image',
-                  'bio_char', 'website', 'major', "id_number")
+                  'bio_char', 'website', 'major', "id_number", "phone_number")
 
 # Activity Form
 

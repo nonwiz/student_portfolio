@@ -10,8 +10,8 @@
       <span class="text-lg">Welcome back, what would you like to do today?</span>
     </div>
   
-    <div>
-    <select  class="mr-4 border-2 border-blue-700 hover:bg-blue-700 text-black  py-2 px-4 rounded hover:text-white" id="activity" onChange="reset_select()">
+    <div class="">
+    <select class="mx-2 border-2 border-blue-700 hover:bg-blue-700 text-black  py-2 px-2 rounded hover:text-white" id="activity" onChange="reset_select()">
         <option> Add Activity</option>
     <optgroup label="Award and Certificate">
       <option onClick="handle_add_ar()"> Academic Recognition </option>
@@ -33,8 +33,6 @@
         </optgroup>
 
       </select>
-
-
   
    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
     Discover Oppurtunites
@@ -124,75 +122,8 @@
   {% include 'components/student/create_form.html' with title="Create Previous Job" form=activity_form url="create-pj" id_form="add_pj" %}
 
 
-    {% comment %}
-        <b><h3>Create Academic-Recognition</h3></b>
-
-        <form method="post" class="border-solid rounded-lg pt-3" action="{% url 'spapp:create-ar' %}">
-            {% csrf_token %}  
-            {{ar_form.as_p}}
-            <input type="submit" value="submit" class="bg-primary text-white rounded-lg p-2 border-solid" />
-        </form>
-        {% endcomment %}
-    </div>
-    <div>
-
-    {% comment %}
-        <b><h3>Create Validator</h3></b>
-        <form method="post" class="border-solid rounded-lg pt-3" action="#">
-            {% csrf_token %}
-            {{v_form.as_p}}
-        </form>
-
-        {% endcomment %}
-    </div>
-    {% comment %}
-    <div>
-        <b><h3>Create Academic-Recognition</h3></b>
-        <form method="post" class="border-solid rounded-lg pt-3" action="{% url 'spapp:create-ar' %}">
-            {% csrf_token %}  
-            {{ar_form.as_p}}
-            <input type="submit" value="submit" class="bg-primary text-white rounded-lg p-2 border-solid" />
-        </form>
-    </div>
-    {% endcomment %}
 </div>
-<div class="grid grid-cols-1 md:grid-cols-4 m-5 ">
-    <div>
-        <b><h3>My Activities</h3></b><br>
-        {% for activity in activities %}
-            {% ifchanged %}
-                <div class="mt-0">
-                    Name: <strong>{{activity.activity_name}}</strong><br>
-                </div><br> 
-            {% endifchanged %}         
-        {% endfor %}
-    </div>
-    <div>
-        <b><h3>My Academic Recognition</h3></b><br>    
-        {% for ar in ars %}
-            <div class="mb-5">
-                Semester: {{ar.semester}} | 
-                GPA: {{ar.gpa}} |
-                Description: {{ar.activity.description}} |
-                Validator: {{ar.activity.validator}}
-                <button class="bg-primary text-white font-bold py-2 px-4 rounded">
-                    <a href="{% url 'spapp:update-ar' ar.id %}">Update</a>
-                </button><br><br>  
-            </div>         
-        {% endfor %} 
-    </div>
-    <div>
-        {% for pj in pjs %}
-            <div class="mb-5">
-                Semester: {{pj.activity}}
-                <button class="bg-primary text-white font-bold py-2 px-4 rounded">
-                    <a href="">Update</a>
-                </button><br><br>  
-            </div>         
-        {% endfor %} 
-    </div>
 </div>
-
   <script>
     const add_activity = document.querySelector("#activity");
   const reset_select = e => {
