@@ -16,7 +16,7 @@ class StudentForm(forms.ModelForm):
     #         'type': 'date',
     #         }
     #     ))
-    image = forms.ImageField(required=False)
+    image = forms.ImageField(required=False, label=("Profile:"), widget=forms.FileInput)
     interests = forms.CharField(required=False)
     website = forms.CharField(required=False)
     id_number = forms.CharField(required=False)

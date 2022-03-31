@@ -4,9 +4,6 @@
 
 
 
-textarea {
-  @apply w-full;
-}
 
 form div {
   @apply flex my-2 flex-col;
@@ -21,12 +18,17 @@ form p {
   @apply w-full;
 }
 
-input[type=text] {
+input[type=text], input[type="email"], input[type="number"], input[type="date"], textarea {
   @apply block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-blue-500 focus:outline-none focus:ring;
 }
 
-input[type=email] {
-  @apply block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-blue-500 focus:outline-none focus:ring;
+input[type=file] {
+    @apply block w-full text-sm text-slate-500
+      file:mr-4 file:py-2 my-2 file:px-4
+      file:rounded-md file:border-0
+      file:text-sm file:font-semibold
+      file:bg-blue-50 file:text-blue-700
+      hover:file:bg-blue-100;
 }
 
 form button {

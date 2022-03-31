@@ -1,28 +1,32 @@
-<details>
-  <summary>
-    Form: {{ title }}
-  </summary>
-  <div class="p-4">
-    <form class="" method="post" id="create_form" action="{{ url }}">
-      {% csrf_token %}
+<dialog class="open:fixed open:inset-0 open:flex open:justify-center h-full w-full  bg-blue-200/75  "
+  id="{{ id_form }}">
+
+
+  <div class="grid place-items-center h-screen">
+    <div
+      class="rounded-lg mx-auto overflow-hidden bg-white rounded-lg drop-shadow-md shadow-blue-500/50 w-full px-6 py-4 md:px-8">
+
+      {{ title }}
       <div class="">
-        {{ form.as_ul }}
+        <form class="" method="post" id="create_form" action="{{ url }}">
+          {% csrf_token %}
+          {{ form.as_p }}
+          {% if activity %}
+          {{ activity.as_p}}
+          {% endif %}
+
+          <div class="col-span-2 flex flex-col md:flex-row gap-2">
+            <button type="submit" class="bg-primary hover:bg-secondary p-2 rounded-md text-white">Create</button>
+            <button type="button" class="text-gray-500 hover:text-white hover:bg-blue-400"
+              onClick="closeDialog()">Cancel</button>
+          </div>
+
+
+          <div class="col-span-2">
+
+          </div>
+
+        </form>
       </div>
-      <div>
-        {% if activity %}
-        {{ activity.as_ul}}
-        {% endif %}
-
-      </div>
-      <div>
-        <button type="submit" class="p-2 m-1 text-white rounded-lg bg-primary" value="Submit">Create</button>
-      </div>
-    </form>
-  </div>
-</details>
-
-<script>
-
-
-
-</script>
+    </div>
+</dialog>

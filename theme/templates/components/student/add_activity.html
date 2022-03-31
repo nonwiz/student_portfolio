@@ -1,0 +1,6 @@
+<h2> Add Activity </h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_ul }}
+  <button type="submit" class="p-4 text-white rounded-lg bg-primary" value="Submit">Add</button>
+</form>

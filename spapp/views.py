@@ -103,6 +103,9 @@ def create_ar(req):
         semester, gpa, year = req.POST['semester'], req.POST['gpa'], req.POST['year']
         AcademicRecognition.objects.create(
             activity=activity, semester=semester, gpa=gpa, year=year)
+
+        messages.add_message(
+            req, messages.SUCCESS, "You have added Academic Recognition Successfully, awaiting for SA's approval.")
     except:
         print('Current logged in user is not a student!')
     return redirect('spapp:dashboard')
@@ -116,6 +119,9 @@ def create_cs(req):
         CommunityService.objects.create(
             activity=activity, location=data["location"]
         )
+        messages.add_message(
+            req, messages.SUCCESS, "You have added Community Service Successfully, awaiting for SA's approval.")
+
     except:
         print('Current logged in user is not a student!')
     return redirect('spapp:dashboard')
@@ -129,6 +135,9 @@ def create_project(req):
         Project.objects.create(
             activity=activity, location=data["location"], responsibility=data["responsibility"]
         )
+        messages.add_message(
+            req, messages.SUCCESS, "You have added Project Successfully, awaiting for SA's approval.")
+
     except:
         print('Current logged in user is not a student!')
     return redirect('spapp:dashboard')
@@ -143,6 +152,9 @@ def create_research(req):
             activity=activity, co_authors=data["co_authors"], link=data["link"], published_date=date.fromisoformat(
                 data["published_date"])
         )
+        messages.add_message(
+            req, messages.SUCCESS, "You have added Research Successfully, awaiting for SA's approval.")
+
     except:
         print('Current logged in user is not a student!')
     return redirect('spapp:dashboard')
@@ -156,6 +168,9 @@ def create_internship(req):
         Internship.objects.create(
             activity=activity
         )
+        messages.add_message(
+            req, messages.SUCCESS, "You have added Internship Successfully, awaiting for SA's approval.")
+
     except:
         print('Current logged in user is not a student!')
     return redirect('spapp:dashboard')
@@ -170,6 +185,9 @@ def create_pj(req):
         PreviousJob.objects.create(
             activity=activity
         )
+        messages.add_message(
+            req, messages.SUCCESS, "You have added Work Experience Successfully, awaiting for SA's approval.")
+
     except:
         print('Current logged in user is not a student!')
     return redirect('spapp:dashboard')
@@ -250,7 +268,23 @@ class RegisterPage(generic.TemplateView):
 class ProfilePage(LoginRequiredMixin, generic.TemplateView):
     login_url = 'spapp:login'
     template_name = "pages/student/profile.html"
+    form_update_student = StudentForm
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            # If Found student account is not found within the Request, return True.
+            context['student'] = get_object_or_404(
+                Student, user=self.request.user)
+            context['update_student'] = self.form_update_student(
+                instance=context["student"])
+            return context
+        except:
+            messages.add_message(
+                self.request, messages.WARNING, "You are not a student")
+            return context
+
+ 
 
 class SettingTestPage(LoginRequiredMixin, generic.UpdateView):
     login_url = 'spapp:login'
@@ -304,22 +338,21 @@ class SettingsPage(LoginRequiredMixin, generic.TemplateView):
 
 
 def update_profile(req):
-    try:
-        data = req.POST.dict()
-        update_student = StudentForm(req.POST, req.FILES)
-        if update_student.is_valid():
-            student = Student.objects.get(user=req.user)
-            form = StudentForm(
-                data, req.FILES, instance=student)
-            form.save()
-            print("Saving", data, form, form.errors)
-        else:
-            print("Errors", update_student.errors, req)
-            messages.add_message(req, messages.INFO,
-                                 update_student.errors.as_text)
-    except:
-        messages.add_message(req, messages.WARNING,
-                             "Unable to update the current student data.")
+    data = req.POST.dict()
+    print("update_profile triggered", data, req.FILES)
+    update_student = StudentForm(data, req.FILES)
+    if update_student.is_valid():
+        student = Student.objects.get(user=req.user)
+        form = StudentForm(
+            data, req.FILES, instance=student)
+        form.save()
+        print("Saving", data, form, form.errors)
+    else:
+        print("Errors", update_student.errors, req)
+        messages.add_message(req, messages.INFO,
+                             update_student.errors.as_text)
+    messages.add_message(req, messages.WARNING,
+                         "Unable to update the current student data.")
 
     return HttpResponseRedirect(req.META.get('HTTP_REFERER'))
 
@@ -546,7 +579,8 @@ def delete_validator(req, pk):
 
 def edit_job(req, pk):
     cj = Job.objects.get(pk=pk)
-    form = JobForm(initial={'title': cj.title, 'description': cj.description, 'location': cj.location, 'type': cj.type, 'company_name': cj.company_name, 'email': cj.email, 'phone_number': cj.phone_number, 'website': cj.website})
+    form = JobForm(initial={'title': cj.title, 'description': cj.description, 'location': cj.location, 'type': cj.type,
+                   'company_name': cj.company_name, 'email': cj.email, 'phone_number': cj.phone_number, 'website': cj.website})
     print(form.as_p())
     return JsonResponse({'form': form.as_p()})
 

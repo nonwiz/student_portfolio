@@ -11,14 +11,37 @@
     </div>
   
     <div>
-      <button class="mr-4 border-2 border-blue-700 hover:bg-blue-700 text-black  py-2 px-4 rounded">
-    Add Activity
-  </button>
+    <select  class="mr-4 border-2 border-blue-700 hover:bg-blue-700 text-black  py-2 px-4 rounded hover:text-white" id="activity" onChange="reset_select()">
+        <option> Add Activity</option>
+    <optgroup label="Award and Certificate">
+      <option onClick="handle_add_ar()"> Academic Recognition </option>
+      <option> Certificate </option>
+      <option> Scholarship </option>
+        </optgroup>
+
+
+<optgroup label="Experience">
+  <option onClick="handle_add_cs()"> Community Service </option>
+  <option onClick="handle_add_internship()"> Internship </option>
+  <option onClick="handle_add_pj()"> Work Experience </option>
+        </optgroup>
+
+
+        <optgroup label="Personal">
+          <option onClick="handle_add_project()"> Projects </option>
+          <option onClick="handle_add_research()"> Research Paper </option>
+        </optgroup>
+
+      </select>
+
+
   
    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
     Discover Oppurtunites
   </button>
     </div>
+    <div>
+        </div>
   </section>
   
   <!-- job listing and activity section -->
@@ -35,18 +58,18 @@
           <div class="flex flew-row justify-between flex-wrap items-end gap-4">
               <div class="flex flex-row gap-8 mt-4 flex-wrap ">
                   <div>
-                      <h3 class="font-semibold">Microsoft Copt</h3>
-                    <span class="text-sm">Posted, March 24, 2022</span>
+                    <h3 class="font-semibold">{{ job.company_name }}</h3>
+                    <span class="text-sm">Posted, {{ job.posted }}</span>
                   </div>
 
                   <div>
                     <p class="font-semibold">Location</p>
-                    <span>Bangkook</span>
+                    <span>{{ job.location }}</span>
                   </div>
 
                   <div>
                     <p class="font-semibold">Position</p>
-                    <span>Full Time</span>
+                    <span>{{ job.type }}</span>
                   </div>
 
               </div>
@@ -58,63 +81,7 @@
           </div>
         </div>
         {% endfor %}
-
-        <div class="bg-white p-6 w-full flex  flex-col lg:gap-0 hover:drop-shadow-md"> 
-          <p class="mt-2 text-2xl font-bold">UI/UX Designer</p>
-          <div class="flex flew-row justify-between flex-wrap items-end gap-4">
-              <div class="flex flex-row gap-8 mt-4 flex-wrap ">
-                  <div>
-                      <h3 class="font-semibold">Microsoft Copt</h3>
-                    <span class="text-sm">Posted, March 24, 2022</span>
-                  </div>
-
-                  <div>
-                    <p class="font-semibold">Location</p>
-                    <span>Bangkook</span>
-                  </div>
-
-                  <div>
-                    <p class="font-semibold">Position</p>
-                    <span>Full Time</span>
-                  </div>
-
-              </div>
-
-              <div>
-                <button class="border-2 border-gray-700 hover:border-blue-700 hover:shadow-md text-black  py-2 px-4 rounded lg">View Details </button>
-              </div>
-  
-          </div>
-        </div>
-
-        <div class="bg-white p-6 w-full flex  flex-col lg:gap-0 hover:drop-shadow-md"> 
-          <p class="mt-2 text-2xl font-bold">UI/UX Designer</p>
-          <div class="flex flew-row justify-between flex-wrap items-end gap-4">
-              <div class="flex flex-row gap-8 mt-4 flex-wrap ">
-                  <div>
-                      <h3 class="font-semibold">Microsoft Copt</h3>
-                    <span class="text-sm">Posted, March 24, 2022</span>
-                  </div>
-
-                  <div>
-                    <p class="font-semibold">Location</p>
-                    <span>Bangkook</span>
-                  </div>
-
-                  <div>
-                    <p class="font-semibold">Position</p>
-                    <span>Full Time</span>
-                  </div>
-
-              </div>
-
-              <div>
-                <button class="border-2 border-gray-700 hover:border-blue-700 hover:shadow-md text-black  py-2 px-4 rounded lg">View Details </button>
-              </div>
-  
-          </div>
-        </div>
-        
+                
       </div>
     </div>
   
@@ -143,43 +110,19 @@
 
 
 
-
-<div class="bg-gray-200 px-16 pt-12 h-screen w-full flex gap-4">
-    <div class="w-2/3">
-      Incomming Job Opportunities
-  
-      <div class="bg-blue-400 mt-4 p-4">
-       {{ jobs }}
-      </div>
-    </div>
-  
-    <div class="w-1/3">
-      Recent Activiites
-  
-      <div class="bg-blue-400 mt-4 p-4">
-        avitivites details
-      </div>
-    </div>
-  </div>
-
-
-
-
-
 <div class="grid grid-cols-1 md:grid-cols-3 m-5">
     <div>
-  {% include 'components/student/create_form.html' with title="Create Academic Recognition" form=ar_form  url="create-ar" %}
+  {% include 'components/student/create_form.html' with title="Create Academic Recognition" form=ar_form  url="create-ar" id_form="add_ar" %}
 
-  {% include 'components/student/create_form.html' with title="Create Community Service" form=cs_form activity=activity_form url="create-cs" %}
+  {% include 'components/student/create_form.html' with title="Create Community Service" form=cs_form activity=activity_form url="create-cs" id_form="add_cs" %}
 
 
-  {% include 'components/student/create_form.html' with title="Create project" form=project_form  url="create-project" activity=activity_form %}
+  {% include 'components/student/create_form.html' with title="Create project" form=project_form  url="create-project" activity=activity_form id_form="add_project" %}
 
-  {% include 'components/student/create_form.html' with title="Create research" form=research_form  url="create-research" activity=activity_form %}
-  {% include 'components/student/create_form.html' with title="Create internship" form=activity_form  url="create-internship" %}
-  {% include 'components/student/create_form.html' with title="Create Previous Job" form=activity_form url="create-pj" %}
+  {% include 'components/student/create_form.html' with title="Create research" form=research_form  url="create-research" activity=activity_form id_form="add_research" %}
+  {% include 'components/student/create_form.html' with title="Create internship" form=activity_form  url="create-internship" id_form="add_internship" %}
+  {% include 'components/student/create_form.html' with title="Create Previous Job" form=activity_form url="create-pj" id_form="add_pj" %}
 
-      {% include 'components/student/create_form.html' with title="Create Academic Recognition" form=ar_form  url="create-ar" %}
 
     {% comment %}
         <b><h3>Create Academic-Recognition</h3></b>
@@ -250,17 +193,49 @@
     </div>
 </div>
 
+  <script>
+    const add_activity = document.querySelector("#activity");
+  const reset_select = e => {
+        setTimeout(() => {
+              console.log("reset select")
+              add_activity.value = "Add Activity"
+            }, 2000)
+      }
+  const add_ar = document.querySelector("#add_ar")
+  const handle_add_ar = (e) => {
+      add_ar.open = true;
+    }
+  const add_cs = document.querySelector("#add_cs")
+  const handle_add_cs = (e) => {
+      add_cs.open = true;
+    }
+
+
+
+  const add_project = document.querySelector("#add_project")
+  const handle_add_project = (e) => {
+      add_project.open = true;
+    }
+
+  const add_research = document.querySelector("#add_research")
+  const handle_add_research = (e) => {
+      add_research.open = true;
+    }
+
+
+  const add_internship = document.querySelector("#add_internship")
+  const handle_add_internship = (e) => {
+      add_internship.open = true;
+    }
+
+
+  const add_pj = document.querySelector("#add_pj")
+  const handle_add_pj = (e) => {
+      add_pj.open = true;
+    }
+
+</script>
+
+
+
 {% endblock %}
-
-<!-- <form method="post" action="{% url 'spapp:update-ar' ar_form.instance.id %}">
-    {% csrf_token %}
-    {{ar_form.as_p}}
-    <input type="submit" value="submit" class="bg-primary text-white rounded-lg p-2 border-solid" />
-    <br><span>==============================</span>
-</form> -->
-
-<!-- Description: <strong>{{ar.activity.description}}</strong><br>
-Start-Date: <strong>{{ar.activity.from_date}}</strong><br>
-End-Date: <strong>{{ar.activity.to_date}}</strong><br>
-Validator: <strong>{{ar.activity.validator}}</strong><br>
-Verification-Status: <strong>{{ar.activity.verification_status}}</strong><br> -->
