@@ -1,9 +1,9 @@
 {% extends 'pages/auth/layout.html' %}
 {% block content %}
 
-<form class="mx-auto mt-20 overflow-hidden bg-white rounded-lg drop-shadow-md shadow-blue-500/50 sm:mt-60 w-96" method="POST">
+<form class="mx-auto mt-20 overflow-hidden bg-white rounded-lg drop-shadow-md shadow-blue-500/50 sm:mt-60 w-96 block" method="POST">
 {% csrf_token %}
-  <!-- <div class="hidden bg-cover lg:block lg:w-1/2" style="background-image:url('https://picsum.photos/1575/800')"></div> -->
+  <div class="hidden bg-cover lg:block" style="background-image:url('https://picsum.photos/1575/800')"></div>
   
   <div class="px-6 py-8 md:px-8">
       <h2 class="text-2xl font-semibold text-center text-gray-700 ">Student Portfolio</h2>
